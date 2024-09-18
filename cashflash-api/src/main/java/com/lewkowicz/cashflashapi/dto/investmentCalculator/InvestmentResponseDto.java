@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter @Setter
-public class InvestmentResponse {
+public class InvestmentResponseDto {
 
     private List<String> investmentDetails;
 

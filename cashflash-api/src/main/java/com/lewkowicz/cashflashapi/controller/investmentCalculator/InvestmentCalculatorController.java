@@ -1,7 +1,7 @@
 package com.lewkowicz.cashflashapi.controller.investmentCalculator;
 
-import com.lewkowicz.cashflashapi.dto.investmentCalculator.InvestmentRequest;
-import com.lewkowicz.cashflashapi.dto.investmentCalculator.InvestmentResponse;
+import com.lewkowicz.cashflashapi.dto.investmentCalculator.InvestmentRequestDto;
+import com.lewkowicz.cashflashapi.dto.investmentCalculator.InvestmentResponseDto;
 import com.lewkowicz.cashflashapi.service.investmentCalculator.IInvestmentCalculatorService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,8 @@ public class InvestmentCalculatorController {
     private IInvestmentCalculatorService investmentCalculatorService;
 
     @PostMapping("/create")
-    public ResponseEntity<InvestmentResponse> createInvestment(@RequestBody InvestmentRequest investmentRequest) {
-        InvestmentResponse response = investmentCalculatorService.createInvestment(investmentRequest);
+    public ResponseEntity<InvestmentResponseDto> createInvestment(@RequestBody InvestmentRequestDto investmentRequest) {
+        InvestmentResponseDto response = investmentCalculatorService.createInvestment(investmentRequest);
         return ResponseEntity.ok(response);
     }
 

@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,15 +13,8 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Investment extends BaseEntity {
-
-    public Investment(LocalDate purchaseDate, LocalDate maturityDate, double netProfit, boolean reinvested) {
-        this.purchaseDate = purchaseDate;
-        this.maturityDate = maturityDate;
-        this.netProfit = netProfit;
-        this.reinvested = reinvested;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

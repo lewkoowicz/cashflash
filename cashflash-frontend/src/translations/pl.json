@@ -1,0 +1,25 @@
+{
+  "navbar": {
+    "login": "Zaloguj się"
+  },
+  "cashflash": {
+    "investmentCalculator": "Kalkulator Inwestycji",
+    "budgetTracker": "Monitor budżetu",
+    "investmentTracker": "Monitor inwestycji"
+  },
+  "investmentCalculator": {
+    "investmentCalculator": "Kalkulator Inwestycji",
+    "investmentAmount": "Kwota Inwestycji",
+    "investmentLength": "Długość Inwestycji",
+    "reinvest": "Reinwestować zyski?",
+    "yes": "Tak",
+    "no": "Nie",
+    "calculate": "Oblicz",
+    "results": "Wyniki Inwestycji",
+    "totalSavings": "Całkowite Oszczędności",
+    "savingsWithoutInvestment": "Oszczędności Bez Inwestycji",
+    "difference": "Różnica",
+    "details": "Szczegóły",
+    "goBack": "Wróć"
+  }
+}

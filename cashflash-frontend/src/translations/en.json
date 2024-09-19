@@ -1,0 +1,25 @@
+{
+  "navbar": {
+    "login": "Sign in"
+  },
+  "cashflash": {
+    "investmentCalculator": "Investment Calculator",
+    "budgetTracker": "Budget Tracker",
+    "investmentTracker": "Investment Tracker"
+  },
+  "investmentCalculator": {
+    "investmentCalculator": "Investment Calculator",
+    "investmentAmount": "Investment Amount",
+    "investmentLength": "Investment Length",
+    "reinvest": "Reinvest profits?",
+    "yes": "Yes",
+    "no": "No",
+    "calculate": "Calculate",
+    "results": "Investment Results",
+    "totalSavings": "Total Savings",
+    "savingsWithoutInvestment": "Savings w/o Investment",
+    "difference": "Difference",
+    "details": "Details",
+    "goBack": "Go Back"
+  }
+}

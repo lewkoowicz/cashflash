@@ -1,13 +1,15 @@
 import {useState} from 'react';
 import {useAuth, useLanguage} from "../context";
 import {translations} from "../translations/translations.ts";
-import {Button, FormInput} from "../components/ui";
+import {Alert, Button, FormInput} from "../components/ui";
 import {Link, useNavigate} from "react-router-dom";
 import {BASE_URL} from "../services";
+import {useAlert} from "../hooks";
 
 const Signin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const {alertType, alertMessage, alertKey, showAlert} = useAlert();
     const {language} = useLanguage();
     const {signin} = useAuth();
     const navigate = useNavigate();
@@ -20,7 +22,7 @@ const Signin = () => {
             navigate('/');
         } catch (error) {
             if (error instanceof Error) {
-
+                showAlert('error', error.message);
             }
         }
     };
@@ -32,13 +34,19 @@ const Signin = () => {
     return (
         <div className="relative flex flex-col items-center justify-center w-full h-full text-base-content gap-4">
             <h1 className="text-3xl font-bold text-center mb-8 text-primary">{t.signin.signin}</h1>
+            {alertType && (
+                <div className="fixed max-w-xs">
+                    <Alert key={alertKey} type={alertType} message={alertMessage}/>
+                </div>
+            )}
             <div className="form-control w-full max-w-xs p-8 bg-base-200 shadow-xl rounded-lg">
                 <FormInput label={t.signin.email} type="email" placeholder="" value={email}
                            onChange={e => setEmail(e.target.value)}/>
                 <FormInput label={t.signin.password} type="password" placeholder="" value={password}
                            onChange={e => setPassword(e.target.value)}/>
                 <Button className={"btn-primary mt-4"} onClick={handleSubmit} text={t.signin.signin}/>
-                <Button className={"btn-outline mt-4 flex items-center justify-center"} onClick={handleGoogleSignIn} text="">
+                <Button className={"btn-outline mt-4 flex items-center justify-center"} onClick={handleGoogleSignIn}
+                        text="">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 488 512"
                          className="w-6 h-6 mr-2">
                         <path

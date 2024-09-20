@@ -25,7 +25,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/sign-in", "/api/sign-up", "/api/create").permitAll()
+                        .requestMatchers("/api/sign-in", "/api/sign-up", "/api/sign-out", "/api/create").permitAll()
                         .requestMatchers("/api/**").access(emailAuthorizationManager)
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2

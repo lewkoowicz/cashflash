@@ -1,6 +1,6 @@
 import React, {ReactNode, useEffect, useState} from 'react';
 import {AuthContext, useLanguage} from '../index.ts';
-import {signin as apiLogin, signup as apiSignup} from "../../services";
+import {signin as apiLogin, signup as apiSignup, signout as apiSignout} from "../../services";
 
 interface AuthProviderProps {
     children: ReactNode;
@@ -31,10 +31,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     };
 
     const signout = async () => {
-        await fetch('http://localhost:8080/api/sign-out', {
-            method: 'POST',
-            credentials: 'include',
-        });
+        await apiSignout(language);
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         localStorage.removeItem('email');
@@ -59,7 +56,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
             setIsLoggedIn(true);
             setSignedInWithGoogle(true);
             setTimeout(() => {
-                const newUrl = `${window.location.origin}/bookings`;
+                const newUrl = `${window.location.origin}`;
                 window.location.replace(newUrl);
             }, 500);
         }

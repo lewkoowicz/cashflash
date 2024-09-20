@@ -26,3 +26,19 @@ export const signup = async (email: string, password: string, language: string) 
         throw new Error('Unknown error.');
     }
 };
+
+export const signout = async (language: string) => {
+    const headers = apiConfig.getHeaders(language);
+    try {
+        const response = await axios.post(`${BASE_URL}/sign-out`, {}, {
+            headers,
+            withCredentials: true
+        });
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.errorMessage || 'Unknown error.');
+        }
+        throw new Error('Unknown error.');
+    }
+};

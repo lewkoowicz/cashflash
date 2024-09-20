@@ -1,7 +1,7 @@
 {
   "navbar": {
     "signin": "Zaloguj się",
-    "signout": "Sign out",
+    "signout": "Wyloguj się",
     "settings": "Ustawienia"
   },
   "cashflash": {
@@ -37,6 +37,7 @@
     "email": "Email",
     "password": "Hasło",
     "confirmPassword": "Potwierdź hasło",
+    "passwordsDoNotMatch": "Hasła są niezgodne",
     "signupGoogle": "Zarejestruj się przez Google"
   }
 }

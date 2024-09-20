@@ -1,8 +1,9 @@
 package com.lewkowicz.cashflashapi.constants.investmentCalculator;
 
-public class InvestmentCalculatorConstants {
+import lombok.NoArgsConstructor;
 
-    private InvestmentCalculatorConstants() {}
+@NoArgsConstructor
+public class InvestmentCalculatorConstants {
 
     public static final double ANNUAL_INTEREST_RATE = 6.4 / 100;
     public static final int BOND_LENGTH_YEARS = 3;

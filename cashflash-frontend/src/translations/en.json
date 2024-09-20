@@ -1,6 +1,8 @@
 {
   "navbar": {
-    "login": "Sign in"
+    "signin": "Sign in",
+    "signout": "Sign out",
+    "settings": "Settings"
   },
   "cashflash": {
     "investmentCalculator": "Investment Calculator",
@@ -21,5 +23,20 @@
     "difference": "Difference",
     "details": "Details",
     "goBack": "Go Back"
+  },
+  "signin": {
+    "signin": "Sign in",
+    "email": "Email",
+    "password": "Password",
+    "signInWithGoogle": "Sign in with Google",
+    "noAccount": "You don't have an account yet?",
+    "signup": "Sign up now"
+  },
+  "signup": {
+    "signup": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "signupGoogle": "Sign up with Google"
   }
 }

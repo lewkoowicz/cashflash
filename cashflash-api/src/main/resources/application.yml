@@ -13,11 +13,25 @@ spring:
     password: ${DB_PASSWORD_LOCAL}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
+        globally_quoted_identifiers: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID_LOCAL}
+            client-secret: ${GOOGLE_CLIENT_SECRET_LOCAL}
+
+rsa:
+  public-key: classpath:certs/public.pem
+  private-key: classpath:certs/private.pem
 
 frontend:
   url: http://localhost:5173

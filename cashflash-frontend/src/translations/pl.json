@@ -1,6 +1,8 @@
 {
   "navbar": {
-    "login": "Zaloguj się"
+    "signin": "Zaloguj się",
+    "signout": "Sign out",
+    "settings": "Ustawienia"
   },
   "cashflash": {
     "investmentCalculator": "Kalkulator Inwestycji",
@@ -21,5 +23,20 @@
     "difference": "Różnica",
     "details": "Szczegóły",
     "goBack": "Wróć"
+  },
+  "signin": {
+    "signin": "Zaloguj się",
+    "email": "Email",
+    "password": "Hasło",
+    "signInWithGoogle": "Zaloguj się przez Google",
+    "noAccount": "Nie masz jeszcze konta?",
+    "signup": "Zarejestruj się teraz"
+  },
+  "signup": {
+    "signup": "Zarejestruj się",
+    "email": "Email",
+    "password": "Hasło",
+    "confirmPassword": "Potwierdź hasło",
+    "signupGoogle": "Zarejestruj się przez Google"
   }
 }

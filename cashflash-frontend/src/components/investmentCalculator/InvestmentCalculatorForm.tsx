@@ -17,7 +17,7 @@ const InvestmentCalculatorForm: React.FC = () => {
 
     const handleSubmit = async () => {
         try {
-            const response = await createInvestment({investmentAmount, investmentLength, reinvest});
+            const response = await createInvestment({investmentAmount, investmentLength, reinvest}, language);
             setResults(response);
             setError(null);
             navigate('/investment-calculator-results', {state: {results: response}});

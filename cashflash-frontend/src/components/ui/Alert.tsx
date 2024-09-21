@@ -12,7 +12,7 @@ const Alert: React.FC<AlertProps> = ({ type, message }) => {
         setShow(true);
         const timer = setTimeout(() => {
             setShow(false);
-        }, 2500);
+        }, 3000);
 
         return () => clearTimeout(timer);
     }, [type, message]);
@@ -38,7 +38,7 @@ const Alert: React.FC<AlertProps> = ({ type, message }) => {
     };
 
     return (
-        <div role="alert" className={`alert ${alertTypes[type]}`}>
+        <div className={`alert ${alertTypes[type]} fixed top-4 max-w-sm`}>
             {alertIcons[type]}
             <span>{message}</span>
         </div>

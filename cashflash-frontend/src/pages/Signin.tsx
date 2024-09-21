@@ -35,9 +35,7 @@ const Signin = () => {
         <div className="relative flex flex-col items-center justify-center w-full h-full text-base-content gap-4">
             <h1 className="text-3xl font-bold text-center mb-8 text-primary">{t.signin.signin}</h1>
             {alertType && (
-                <div className="fixed max-w-xs">
-                    <Alert key={alertKey} type={alertType} message={alertMessage}/>
-                </div>
+                <Alert key={alertKey} type={alertType} message={alertMessage}/>
             )}
             <div className="form-control w-full max-w-xs p-8 bg-base-200 shadow-xl rounded-lg">
                 <FormInput label={t.signin.email} type="email" placeholder="" value={email}

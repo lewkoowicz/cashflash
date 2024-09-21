@@ -8,7 +8,6 @@ import org.springframework.core.Ordered;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.filter.ForwardedHeaderFilter;
 
@@ -23,9 +22,8 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, EmailAuthorizationManager emailAuthorizationManager, JwtConfigurer jwtConfigurer) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/sign-in", "/api/sign-up", "/api/sign-out", "/api/create").permitAll()
+                        .requestMatchers("api/csrf-token","/api/sign-in", "/api/sign-up", "/api/sign-out", "/api/create").permitAll()
                         .requestMatchers("/api/**").access(emailAuthorizationManager)
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2

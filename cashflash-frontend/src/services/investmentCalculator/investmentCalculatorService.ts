@@ -5,14 +5,12 @@ import {apiConfig, BASE_URL} from "../apiConfig.ts";
 export const createInvestment = async (data: InvestmentRequest, language: string): Promise<InvestmentResponse> => {
     const headers = apiConfig.getHeaders(language);
     try {
-        const response = await axios.post<InvestmentResponse>(`${BASE_URL}/create`, data, {
-            headers
-        });
+        const response = await axios.post<InvestmentResponse>(`${BASE_URL}/create`, data, {headers});
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.errorMessage || 'Unknown error occurred');
+            throw new Error(error.response.data.errorMessage || 'Unknown error');
         }
-        throw new Error('Network error');
+        throw new Error('Unknown error');
     }
 };

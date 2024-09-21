@@ -15,11 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Locale;
 import java.util.Map;
@@ -32,6 +30,11 @@ public class AuthController {
 
     private final AuthServiceImpl authService;
     private final MessageSource messageSource;
+
+    @GetMapping("/csrf-token")
+    public CsrfToken getCsrfToken(CsrfToken token) {
+        return token;
+    }
 
     @PostMapping("/sign-up")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto userDto) {

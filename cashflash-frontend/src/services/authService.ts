@@ -8,7 +8,7 @@ export const signin = async (email: string, password: string, language: string) 
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.errorMessage || 'Unknown error');
+            throw new Error(error.response.data.errorMessage);
         }
         throw new Error('Unknown error');
     }
@@ -21,7 +21,7 @@ export const signup = async (email: string, password: string, language: string) 
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.errorMessage || 'Unknown error');
+            throw new Error(error.response.data.errorMessage);
         }
         throw new Error('Unknown error');
     }
@@ -34,7 +34,7 @@ export const signout = async (language: string) => {
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.errorMessage || 'Unknown error');
+            throw new Error(error.response.data.errorMessage);
         }
         throw new Error('Unknown error');
     }

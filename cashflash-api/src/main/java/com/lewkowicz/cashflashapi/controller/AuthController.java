@@ -37,8 +37,8 @@ public class AuthController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto userDto) {
-        authService.createUser(userDto);
+    public ResponseEntity<?> signup(@Valid @RequestBody UserDto userDto) {
+        authService.signup(userDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(HttpStatus.CREATED.toString(), getMessage(AuthConstants.ACCOUNT_CREATED)));
@@ -46,26 +46,20 @@ public class AuthController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginCredentialsDto loginRequest) {
-        Map<String, Object> response = authService.authenticateUser(loginRequest);
+        Map<String, Object> response = authService.signin(loginRequest);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/sign-out")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
+    public ResponseEntity<?> signout(HttpServletRequest request) {
         SecurityContextHolder.clearContext();
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
-        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.toString(), getMessage(AuthConstants.LOGOUT_SUCCESS)));
-    }
-
-    @PostMapping("/delete-account")
-    public ResponseEntity<?> deleteUserAccount(@Valid @RequestBody LoginCredentialsDto credentials) {
-        authService.deleteAccount(credentials.getEmail(), credentials.getPassword());
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseDto(HttpStatus.OK.toString(), getMessage(AuthConstants.ACCOUNT_DELETED)));
+                .body(new ResponseDto(HttpStatus.OK.toString(), getMessage(AuthConstants.LOGOUT_SUCCESS)));
     }
 
     private String getMessage(String key) {

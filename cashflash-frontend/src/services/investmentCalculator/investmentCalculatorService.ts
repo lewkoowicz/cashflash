@@ -9,7 +9,7 @@ export const createInvestment = async (data: InvestmentRequest, language: string
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.errorMessage || 'Unknown error');
+            throw new Error(error.response.data.errorMessage);
         }
         throw new Error('Unknown error');
     }

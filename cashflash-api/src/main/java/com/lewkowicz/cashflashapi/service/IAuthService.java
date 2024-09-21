@@ -7,10 +7,8 @@ import java.util.Map;
 
 public interface IAuthService {
 
-    void createUser(UserDto userDto);
+    void signup(UserDto userDto);
 
-    Map<String, Object> authenticateUser(LoginCredentialsDto loginRequest);
-
-    void deleteAccount(String email, String password);
+    Map<String, Object> signin(LoginCredentialsDto loginRequest);
 
 }

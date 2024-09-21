@@ -6,11 +6,10 @@ import com.lewkowicz.cashflashapi.dto.UserDto;
 import com.lewkowicz.cashflashapi.entity.User;
 import com.lewkowicz.cashflashapi.exception.AccountAlreadyExistsException;
 import com.lewkowicz.cashflashapi.exception.LoginFailedException;
-import com.lewkowicz.cashflashapi.exception.PasswordsDoNotMatchException;
 import com.lewkowicz.cashflashapi.exception.ResourceNotFoundException;
 import com.lewkowicz.cashflashapi.repository.UserRepository;
-import com.lewkowicz.cashflashapi.security.UserDetailsServiceImpl;
 import com.lewkowicz.cashflashapi.security.TokenService;
+import com.lewkowicz.cashflashapi.security.UserDetailsServiceImpl;
 import com.lewkowicz.cashflashapi.service.IAuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +36,7 @@ public class AuthServiceImpl implements IAuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void createUser(UserDto userDto) {
+    public void signup(UserDto userDto) {
         Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
         if (optionalUser.isPresent()) {
             throw new AccountAlreadyExistsException(AuthConstants.ACCOUNT_ALREADY_EXISTS);
@@ -51,7 +49,7 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public Map<String, Object> authenticateUser(LoginCredentialsDto loginRequest) {
+    public Map<String, Object> signin(LoginCredentialsDto loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -76,18 +74,6 @@ public class AuthServiceImpl implements IAuthService {
         } catch (Exception e) {
             throw new LoginFailedException(AuthConstants.LOGIN_FAILED);
         }
-    }
-
-    @Override
-    public void deleteAccount(String email, String password) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
-
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new PasswordsDoNotMatchException(AuthConstants.WRONG_PASSWORD);
-        }
-
-        userRepository.delete(user);
     }
 
 }

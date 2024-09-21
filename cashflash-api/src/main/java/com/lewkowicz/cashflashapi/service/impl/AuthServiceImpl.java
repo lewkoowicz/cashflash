@@ -9,7 +9,6 @@ import com.lewkowicz.cashflashapi.exception.LoginFailedException;
 import com.lewkowicz.cashflashapi.exception.ResourceNotFoundException;
 import com.lewkowicz.cashflashapi.repository.UserRepository;
 import com.lewkowicz.cashflashapi.security.TokenService;
-import com.lewkowicz.cashflashapi.security.UserDetailsServiceImpl;
 import com.lewkowicz.cashflashapi.service.IAuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -33,7 +31,6 @@ public class AuthServiceImpl implements IAuthService {
     private final UserDetailsServiceImpl userDetailsService;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void signup(UserDto userDto) {
@@ -57,7 +54,6 @@ public class AuthServiceImpl implements IAuthService {
                             loginRequest.getPassword()
                     )
             );
-
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = tokenService.generateToken(authentication);
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -65,7 +61,6 @@ public class AuthServiceImpl implements IAuthService {
                     .map(GrantedAuthority::getAuthority)
                     .findFirst()
                     .orElseThrow(() -> new ResourceNotFoundException(AuthConstants.ROLE_NOT_FOUND));
-
             Map<String, Object> response = new HashMap<>();
             response.put("token", jwt);
             response.put("role", role);

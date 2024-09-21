@@ -1,4 +1,4 @@
-package com.lewkowicz.cashflashapi.security;
+package com.lewkowicz.cashflashapi.service.impl;
 
 import com.lewkowicz.cashflashapi.entity.User;
 import com.lewkowicz.cashflashapi.repository.UserRepository;

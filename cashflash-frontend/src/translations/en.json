@@ -4,6 +4,29 @@
     "signout": "Sign out",
     "settings": "Settings"
   },
+  "signin": {
+    "signin": "Sign in",
+    "email": "Email",
+    "password": "Password",
+    "signInWithGoogle": "Sign in with Google",
+    "noAccount": "You don't have an account yet?",
+    "signup": "Sign up now"
+  },
+  "signup": {
+    "signup": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "signupGoogle": "Sign up with Google"
+  },
+  "settings": {
+    "settings": "Settings",
+    "changeLanguage": "Change default language",
+    "changeTheme": "Change default theme",
+    "changePassword": "Change password",
+    "deleteAccount": "Delete account"
+  },
   "cashflash": {
     "investmentCalculator": "Investment Calculator",
     "budgetTracker": "Budget Tracker",
@@ -23,21 +46,5 @@
     "difference": "Difference",
     "details": "Details",
     "goBack": "Go Back"
-  },
-  "signin": {
-    "signin": "Sign in",
-    "email": "Email",
-    "password": "Password",
-    "signInWithGoogle": "Sign in with Google",
-    "noAccount": "You don't have an account yet?",
-    "signup": "Sign up now"
-  },
-  "signup": {
-    "signup": "Sign up",
-    "email": "Email",
-    "password": "Password",
-    "confirmPassword": "Confirm password",
-    "passwordsDoNotMatch": "Passwords do not match",
-    "signupGoogle": "Sign up with Google"
   }
 }

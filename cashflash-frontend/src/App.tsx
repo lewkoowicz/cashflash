@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import {InvestmentCalculatorForm, InvestmentCalculatorResults} from "./components/investmentCalculator";
 import {Navbar} from "./layouts";
-import {Cashflash, Signin, Signup} from "./pages";
+import {Cashflash, Signin, Signup, Settings} from "./pages";
 import {AuthProvider, CsrfProvider, LanguageProvider, ThemeProvider} from "./context";
 
 function App() {
@@ -27,6 +27,11 @@ function App() {
                                     <Route path="/sign-up" element={
                                         <div className="flex-grow flex items-center justify-center">
                                             <Signup/>
+                                        </div>
+                                    }/>
+                                    <Route path="/settings" element={
+                                        <div className="flex-grow flex items-center justify-center">
+                                            <Settings/>
                                         </div>
                                     }/>
                                     <Route path="/investment-calculator" element={

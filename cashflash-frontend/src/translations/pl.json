@@ -4,6 +4,29 @@
     "signout": "Wyloguj się",
     "settings": "Ustawienia"
   },
+  "signin": {
+    "signin": "Zaloguj się",
+    "email": "Email",
+    "password": "Hasło",
+    "signInWithGoogle": "Zaloguj się przez Google",
+    "noAccount": "Nie masz jeszcze konta?",
+    "signup": "Zarejestruj się teraz"
+  },
+  "signup": {
+    "signup": "Zarejestruj się",
+    "email": "Email",
+    "password": "Hasło",
+    "confirmPassword": "Potwierdź hasło",
+    "passwordsDoNotMatch": "Hasła są niezgodne",
+    "signupGoogle": "Zarejestruj się przez Google"
+  },
+  "settings": {
+    "settings": "Ustawienia",
+    "changeLanguage": "Zmień domyślny język",
+    "changeTheme": "Zmień domyślny motyw",
+    "changePassword": "Zmień hasło",
+    "deleteAccount": "Usuń konto"
+  },
   "cashflash": {
     "investmentCalculator": "Kalkulator Inwestycji",
     "budgetTracker": "Monitor budżetu",
@@ -23,21 +46,5 @@
     "difference": "Różnica",
     "details": "Szczegóły",
     "goBack": "Wróć"
-  },
-  "signin": {
-    "signin": "Zaloguj się",
-    "email": "Email",
-    "password": "Hasło",
-    "signInWithGoogle": "Zaloguj się przez Google",
-    "noAccount": "Nie masz jeszcze konta?",
-    "signup": "Zarejestruj się teraz"
-  },
-  "signup": {
-    "signup": "Zarejestruj się",
-    "email": "Email",
-    "password": "Hasło",
-    "confirmPassword": "Potwierdź hasło",
-    "passwordsDoNotMatch": "Hasła są niezgodne",
-    "signupGoogle": "Zarejestruj się przez Google"
   }
 }

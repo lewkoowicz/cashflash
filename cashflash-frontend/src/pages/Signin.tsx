@@ -38,12 +38,20 @@ const Signin = () => {
                 <Alert key={alertKey} type={alertType} message={alertMessage}/>
             )}
             <div className="form-control w-full max-w-xs p-8 bg-base-200 shadow-xl rounded-lg">
-                <FormInput label={t.signin.email} type="email" placeholder="" value={email}
+                <FormInput label={t.signin.email}
+                           type="email" placeholder=""
+                           value={email}
                            onChange={e => setEmail(e.target.value)}/>
-                <FormInput label={t.signin.password} type="password" placeholder="" value={password}
+                <FormInput label={t.signin.password}
+                           type="password"
+                           placeholder=""
+                           value={password}
                            onChange={e => setPassword(e.target.value)}/>
-                <Button className={"btn-primary mt-4"} onClick={handleSubmit} text={t.signin.signin}/>
-                <Button className={"btn-outline mt-4 flex items-center justify-center"} onClick={handleGoogleSignIn}
+                <Button className={"btn-primary mt-4"}
+                        onClick={handleSubmit}
+                        text={t.signin.signin}/>
+                <Button className={"btn-outline mt-4 flex items-center justify-center"}
+                        onClick={handleGoogleSignIn}
                         text="">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 488 512"
                          className="w-6 h-6 mr-2">

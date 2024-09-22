@@ -52,8 +52,7 @@ const Signup = () => {
                 <FormInput label={t.signup.confirmPassword} type="password" placeholder="" value={confirmPassword}
                            onChange={e => setConfirmPassword(e.target.value)}/>
                 <Button className={"btn-primary mt-4"} onClick={handleSubmit} text={t.signup.signup}/>
-                <Button className={"btn-outline mt-4 flex items-center justify-center"} onClick={handleGoogleSignUp}
-                        text="">
+                <Button className={"btn-outline mt-4 flex items-center justify-center"} onClick={handleGoogleSignUp} text="">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 488 512"
                          className="w-6 h-6 mr-2">
                         <path

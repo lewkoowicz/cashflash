@@ -11,7 +11,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     const [role, setRole] = useState<string | ''>(localStorage.getItem('role') || '');
     const [email, setEmail] = useState<string | ''>(localStorage.getItem('email') || '');
     const [isSignedIn, setIsLoggedIn] = useState<boolean>(!!role);
-    const [signedInWithGoogle, setSignedInWithGoogle] = useState<boolean>(false);
 
     const {language} = useLanguage();
 
@@ -54,7 +53,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
             localStorage.setItem('email', emailFromParams);
             localStorage.setItem('role', roleFromParams);
             setIsLoggedIn(true);
-            setSignedInWithGoogle(true);
             setTimeout(() => {
                 const newUrl = `${window.location.origin}`;
                 window.location.replace(newUrl);
@@ -68,7 +66,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{isSignedIn, token, role, email, signin, signup, signout, signedInWithGoogle}}>
+        <AuthContext.Provider value={{isSignedIn, token, role, email, signin, signup, signout}}>
             {children}
         </AuthContext.Provider>
     );

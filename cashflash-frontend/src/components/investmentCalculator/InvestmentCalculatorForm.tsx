@@ -1,30 +1,37 @@
 import React, {useState} from 'react';
-import {InvestmentResponse, createInvestment} from "../../services/investmentCalculator";
-import {FormInput, Button} from "./index.ts";
+import {createInvestment} from "../../services/investmentCalculator";
+import {Alert, Button, FormInput} from "../ui";
 import {useNavigate} from 'react-router-dom';
 import {useLanguage} from "../../context";
 import {translations} from "../../translations/translations.ts";
+import {useAlert} from "../../hooks";
 
 const InvestmentCalculatorForm: React.FC = () => {
     const navigate = useNavigate();
     const {language} = useLanguage();
-    const [investmentAmount, setInvestmentAmount] = useState('');
-    const [investmentLength, setInvestmentLength] = useState('');
-    const [reinvest, setReinvest] = useState(true);
-    const [results, setResults] = useState<InvestmentResponse | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const {alertType, alertMessage, alertKey, showAlert} = useAlert();
+    const [formData, setFormData] = useState({
+        investmentAmount: '',
+        investmentLength: '',
+        reinvest: true
+    });
     const t = translations[language];
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value, type, checked} = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
 
     const handleSubmit = async () => {
         try {
-            const response = await createInvestment({investmentAmount, investmentLength, reinvest}, language);
-            setResults(response);
-            setError(null);
+            const response = await createInvestment(formData, language);
             navigate('/investment-calculator-results', {state: {results: response}});
         } catch (error) {
             if (error instanceof Error) {
-                setError('Error calculating bond investment');
-                setResults(null);
+                showAlert('error', error.message)
             }
         }
     };
@@ -32,66 +39,38 @@ const InvestmentCalculatorForm: React.FC = () => {
     return (
         <div className="flex flex-col items-center w-full h-full">
             <h1 className="text-3xl font-bold mb-8 text-center w-full">{t.investmentCalculator.investmentCalculator}</h1>
+            {alertType && (
+                <Alert key={alertKey} type={alertType} message={alertMessage}/>
+            )}
             <div className="form-control w-full max-w-xs p-8 bg-base-200 shadow-xl rounded-lg">
                 <FormInput
                     label={t.investmentCalculator.investmentAmount}
                     type="number"
-                    value={investmentAmount}
-                    onChange={(e) => setInvestmentAmount(e.target.value)}
+                    value={formData.investmentAmount}
+                    onChange={handleInputChange}
                 />
                 <FormInput
                     label={t.investmentCalculator.investmentLength}
                     type="number"
-                    value={investmentLength}
-                    onChange={(e) => setInvestmentLength(e.target.value)}
+                    value={formData.investmentLength}
+                    onChange={handleInputChange}
                 />
                 <div className="form-control mb-5 text-left">
                     <label className="label">
                         <span className="label-text font-semibold mb-2">{t.investmentCalculator.reinvest}</span>
                     </label>
                     <label className="swap">
-                        <input type="checkbox" checked={reinvest} onChange={(e) => setReinvest(e.target.checked)}/>
+                        <input
+                            type="checkbox"
+                            name="reinvest"
+                            checked={formData.reinvest}
+                            onChange={handleInputChange}
+                        />
                         <div className="swap-on">{t.investmentCalculator.yes}</div>
                         <div className="swap-off">{t.investmentCalculator.no}</div>
                     </label>
                 </div>
-                <Button onClick={handleSubmit} text={t.investmentCalculator.calculate}/>
-                {error && <p className="text-error">{error}</p>}
-                {results && (
-                    <div className="mt-4 p-4 bg-base-200 rounded-lg shadow w-full">
-                        <h2 className="text-2xl font-bold mb-3">{t.investmentCalculator.results}</h2>
-                        <div className="stats shadow">
-                            <div className="stat">
-                                <div className="stat-title">{t.investmentCalculator.totalSavings}</div>
-                                <div className="stat-value">{results.totalSavings}</div>
-                            </div>
-                            <div className="stat">
-                                <div className="stat-title">{t.investmentCalculator.savingsWithoutInvestment}</div>
-                                <div className="stat-value">{results.totalSavingsWithoutInvestment}</div>
-                            </div>
-                            <div className="stat">
-                                <div className="stat-title">{t.investmentCalculator.difference}</div>
-                                <div className="stat-value">{results.difference}</div>
-                            </div>
-                        </div>
-                        <div className="overflow-x-auto mt-4">
-                            <table className="table w-full">
-                                <thead>
-                                <tr>
-                                    <th>{t.investmentCalculator.details}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {results.investmentDetails.map((detail, index) => (
-                                    <tr key={index}>
-                                        <td>{detail}</td>
-                                    </tr>
-                                ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                )}
+                <Button className="btn-primary mt-2" onClick={handleSubmit} text={t.investmentCalculator.calculate}/>
             </div>
         </div>
     );

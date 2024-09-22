@@ -25,7 +25,7 @@ export const getCsrfToken = async () => {
         return response.data.token;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.errorMessage || 'Unknown error');
+            throw new Error(error.response.data.errorMessage);
         }
         throw new Error('Unknown error');
     }

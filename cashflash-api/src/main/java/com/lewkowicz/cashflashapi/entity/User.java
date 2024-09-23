@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter @Setter @ToString @AllArgsConstructor @NoArgsConstructor
+@Getter
+@Setter
+@ToString(exclude = "preferences")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User extends BaseEntity {
 
     @Id
@@ -19,5 +23,8 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     private String role;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private UserPreferences preferences;
 
 }

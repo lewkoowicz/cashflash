@@ -1,9 +1,11 @@
 package com.lewkowicz.cashflashapi.service.impl;
 
 import com.lewkowicz.cashflashapi.constants.UserPreferencesConstants;
+import com.lewkowicz.cashflashapi.dto.UserPreferencesDto;
 import com.lewkowicz.cashflashapi.entity.User;
 import com.lewkowicz.cashflashapi.entity.UserPreferences;
 import com.lewkowicz.cashflashapi.exception.ResourceNotFoundException;
+import com.lewkowicz.cashflashapi.mapper.UserPreferencesMapper;
 import com.lewkowicz.cashflashapi.repository.UserPreferencesRepository;
 import com.lewkowicz.cashflashapi.repository.UserRepository;
 import com.lewkowicz.cashflashapi.service.IUserPreferencesService;
@@ -29,6 +31,21 @@ public class UserPreferencesServiceImpl implements IUserPreferencesService {
         UserPreferences userPreferences = getUserPreferencesOrCreate(userId);
         userPreferences.setDefaultTheme(theme);
         userPreferencesRepository.save(userPreferences);
+    }
+
+    @Override
+    @Transactional
+    public void setDefaultLanguage(Long userId, String language) {
+        UserPreferences userPreferences = getUserPreferencesOrCreate(userId);
+        userPreferences.setDefaultLanguage(language);
+        userPreferencesRepository.save(userPreferences);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserPreferencesDto getUserPreferences(Long userId) {
+        UserPreferences userPreferences = getUserPreferencesOrCreate(userId);
+        return UserPreferencesMapper.mapToUserPreferencesDto(userPreferences, new UserPreferencesDto());
     }
 
     private UserPreferences getUserPreferencesOrCreate(Long userId) {

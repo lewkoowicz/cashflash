@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.filter.ForwardedHeaderFilter;
 
 @Configuration
@@ -18,12 +19,14 @@ import org.springframework.web.filter.ForwardedHeaderFilter;
 public class SecurityConfig {
 
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final CorsConfigurationSource corsConfigurationSource;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, EmailAuthorizationManager emailAuthorizationManager, JwtConfigurer jwtConfigurer) throws Exception {
         return http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("api/csrf-token","/api/sign-in", "/api/sign-up", "/api/sign-out", "/api/create").permitAll()
+                        .requestMatchers("api/csrf-token", "/api/sign-in", "/api/sign-up", "/api/sign-out", "/api/create").permitAll()
                         .requestMatchers("/api/**").access(emailAuthorizationManager)
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
@@ -36,6 +39,8 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                         .clearAuthentication(true)
                         .invalidateHttpSession(true))
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/sign-out"))
                 .build();
     }
 

@@ -1,11 +1,17 @@
 import {useLanguage} from "../context";
 import {translations} from "../translations/translations.ts";
 import {Button} from "../components/ui";
+import {useNavigate} from "react-router-dom";
 
 const Settings = () => {
     const {language} = useLanguage();
+    const navigate = useNavigate();
 
     const t = translations[language];
+
+    const handleChangeTheme = () => {
+        navigate('/default-theme')
+    }
 
     return (
         <div className="flex flex-col w-full max-w-sm items-center justify-center p-4">
@@ -14,8 +20,7 @@ const Settings = () => {
                 <div className="relative group">
                     <Button className="btn-primary w-full mt-4 flex items-center justify-center relative"
                             text=""
-                            onClick={() => {
-                            }}>
+                            onClick={handleChangeTheme}>
                         <div className="absolute left-8">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                  className="w-6 h-6 mr-1 fill-current">

@@ -1,27 +1,20 @@
 import React, {ReactNode, useEffect, useState} from 'react';
 import {AuthContext, useLanguage} from '../index.ts';
-import {signin as apiLogin, signup as apiSignup, signout as apiSignout} from "../../services";
+import {signin as apiLogin, signout as apiSignout, signup as apiSignup} from "../../services";
 
 interface AuthProviderProps {
     children: ReactNode;
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
-    const [token, setToken] = useState<string | ''>(localStorage.getItem('token') || '');
-    const [role, setRole] = useState<string | ''>(localStorage.getItem('role') || '');
-    const [email, setEmail] = useState<string | ''>(localStorage.getItem('email') || '');
-    const [isSignedIn, setIsLoggedIn] = useState<boolean>(!!role);
-
     const {language} = useLanguage();
+    const [token, setToken] = useState<string | ''>(localStorage.getItem('token') || '');
+    const [isSignedIn, setIsLoggedIn] = useState<boolean>(!!token);
 
     const signin = async (email: string, password: string) => {
         const data = await apiLogin(email, password, language);
         localStorage.setItem('token', data.token);
-        localStorage.setItem('role', data.role);
-        localStorage.setItem('email', data.email);
         setToken(data.token);
-        setEmail(data.email);
-        setRole(data.role);
         setIsLoggedIn(true);
     };
 
@@ -32,8 +25,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     const signout = async () => {
         await apiSignout(language);
         localStorage.removeItem('token');
-        localStorage.removeItem('role');
-        localStorage.removeItem('email');
         setIsLoggedIn(false);
         const newUrl = `${window.location.origin}/sign-in`;
         window.location.replace(newUrl);
@@ -44,29 +35,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
 
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
-        const emailFromParams = searchParams.get('email');
-        const roleFromParams = searchParams.get('role');
+        const tokenFromParams = searchParams.get('token');
 
-        if (emailFromParams && roleFromParams) {
-            setEmail(emailFromParams);
-            setRole(roleFromParams);
-            localStorage.setItem('email', emailFromParams);
-            localStorage.setItem('role', roleFromParams);
+        if (tokenFromParams && tokenFromParams !== "oauth") {
             setIsLoggedIn(true);
+            localStorage.setItem('token', tokenFromParams);
             setTimeout(() => {
                 const newUrl = `${window.location.origin}`;
                 window.location.replace(newUrl);
             }, 500);
         }
 
-        const storedRole = localStorage.getItem('role');
-        if (storedRole) {
-            setRole(storedRole);
+        if (tokenFromParams === "oauth") {
+            apiSignout(language).then(r => r);
+            const newUrl = `${window.location.origin}/sign-in`;
+            window.location.replace(newUrl);
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        }
+
+        const storedToken = localStorage.getItem('token');
+        if (storedToken) {
+            setToken(storedToken);
         }
     }, []);
 
     return (
-        <AuthContext.Provider value={{isSignedIn, token, role, email, signin, signup, signout}}>
+        <AuthContext.Provider value={{isSignedIn, token, signin, signup, signout}}>
             {children}
         </AuthContext.Provider>
     );

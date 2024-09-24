@@ -27,6 +27,7 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     private String frontendUrl;
 
     private final UserRepository userRepository;
+    private final TokenService tokenService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
@@ -43,8 +44,11 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
                         newUser, List.of(new SimpleGrantedAuthority(user.getRole())),
                         oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
                 SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+                String jwt = tokenService.generateToken(newAuth);
+
                 try {
-                    response.sendRedirect(frontendUrl + "?email=" + email + "&role=" + user.getRole());
+                    response.sendRedirect(frontendUrl + "?token=" + jwt);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -54,8 +58,9 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
                 newUser.setEmail(email);
                 newUser.setPassword("");
                 userRepository.save(newUser);
+
                 try {
-                    response.sendRedirect(frontendUrl + "?email=" + email + "&role=" + "USER");
+                    response.sendRedirect(frontendUrl + "?token=oauth");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

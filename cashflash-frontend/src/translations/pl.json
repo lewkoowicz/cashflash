@@ -27,6 +27,12 @@
     "changePassword": "Zmień hasło",
     "deleteAccount": "Usuń konto"
   },
+  "defaultTheme": {
+    "setDefaultTheme": "Zmień domyślny motyw",
+    "light": "Jasny",
+    "dark": "Ciemny",
+    "save": "Zapisz"
+  },
   "cashflash": {
     "investmentCalculator": "Kalkulator Inwestycji",
     "budgetTracker": "Monitor budżetu",

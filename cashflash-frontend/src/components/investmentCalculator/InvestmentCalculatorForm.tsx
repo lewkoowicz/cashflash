@@ -17,11 +17,11 @@ const InvestmentCalculatorForm: React.FC = () => {
     });
     const t = translations[language];
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value, type, checked} = e.target;
+    const handleInputChange = (fieldName: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         setFormData(prev => ({
             ...prev,
-            [name]: type === 'checkbox' ? checked : value
+            [fieldName]: value
         }));
     };
 
@@ -47,13 +47,13 @@ const InvestmentCalculatorForm: React.FC = () => {
                     label={t.investmentCalculator.investmentAmount}
                     type="number"
                     value={formData.investmentAmount}
-                    onChange={handleInputChange}
+                    onChange={handleInputChange('investmentAmount')}
                 />
                 <FormInput
                     label={t.investmentCalculator.investmentLength}
                     type="number"
                     value={formData.investmentLength}
-                    onChange={handleInputChange}
+                    onChange={handleInputChange('investmentLength')}
                 />
                 <div className="form-control mb-5 text-left">
                     <label className="label">
@@ -64,7 +64,7 @@ const InvestmentCalculatorForm: React.FC = () => {
                             type="checkbox"
                             name="reinvest"
                             checked={formData.reinvest}
-                            onChange={handleInputChange}
+                            onChange={handleInputChange('reinvest')}
                         />
                         <div className="swap-on">{t.investmentCalculator.yes}</div>
                         <div className="swap-off">{t.investmentCalculator.no}</div>

@@ -5,7 +5,7 @@ interface LanguageProviderProps {
     children: ReactNode;
 }
 
-export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({children}) => {
     const [language, setLanguage] = useState<'pl' | 'en'>(() => {
         const savedLanguage = localStorage.getItem('language');
         return (savedLanguage === 'pl' || savedLanguage === 'en') ? savedLanguage : 'pl';
@@ -13,6 +13,19 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
     useEffect(() => {
         localStorage.setItem('language', language);
+
+        const handleLanguageChange = (event: CustomEvent) => {
+            const newLanguage = event.detail;
+            if (newLanguage === 'pl' || newLanguage === 'en') {
+                setLanguage(newLanguage);
+            }
+        };
+
+        window.addEventListener('languageChange', handleLanguageChange as EventListener);
+
+        return () => {
+            window.removeEventListener('languageChange', handleLanguageChange as EventListener);
+        };
     }, [language]);
 
     const toggleLanguage = () => {
@@ -20,7 +33,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     };
 
     return (
-        <LanguageContext.Provider value={{ language, toggleLanguage }}>
+        <LanguageContext.Provider value={{language, toggleLanguage}}>
             {children}
         </LanguageContext.Provider>
     );

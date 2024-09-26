@@ -44,8 +44,12 @@ public class UserPreferencesServiceImpl implements IUserPreferencesService {
     @Override
     @Transactional(readOnly = true)
     public UserPreferencesDto getUserPreferences(Long userId) {
-        UserPreferences userPreferences = getUserPreferencesOrCreate(userId);
-        return UserPreferencesMapper.mapToUserPreferencesDto(userPreferences, new UserPreferencesDto());
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(getMessage(UserPreferencesConstants.USER_NOT_FOUND)));
+        if (user.getPreferences() == null) {
+            return null;
+        }
+        return UserPreferencesMapper.mapToUserPreferencesDto(user.getPreferences(), new UserPreferencesDto());
     }
 
     private UserPreferences getUserPreferencesOrCreate(Long userId) {

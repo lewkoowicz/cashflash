@@ -20,7 +20,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Locale;
-import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/api", produces = (MediaType.APPLICATION_JSON_VALUE))
@@ -46,7 +45,7 @@ public class AuthController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginCredentialsDto loginRequest) {
-        Map<String, Object> response = authService.signin(loginRequest);
+        String response = authService.signin(loginRequest);
         return ResponseEntity.ok(response);
     }
 

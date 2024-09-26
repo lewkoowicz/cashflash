@@ -42,7 +42,7 @@ const DefaultTheme = () => {
                         <label className="cursor-pointer flex items-center">
                             <input type="radio" name="radio-10" onChange={toggleTheme}
                                    className="radio checked:bg-blue-900"
-                                   defaultChecked/>
+                                   checked={theme === 'dark'}/>
                             <span className="ml-2">{t.defaultTheme.dark}</span>
                             <div className="absolute right-40">
                                 <svg className="fill-current w-7 h-7" xmlns="http://www.w3.org/2000/svg"
@@ -56,7 +56,8 @@ const DefaultTheme = () => {
                     <div className="form-control mt-4">
                         <label className="cursor-pointer flex items-center">
                             <input type="radio" name="radio-10" onChange={toggleTheme}
-                                   className="radio checked:bg-blue-500"/>
+                                   className="radio checked:bg-blue-500"
+                                   checked={theme === 'light'}/>
                             <span className="ml-2">{t.defaultTheme.light}</span>
                             <div className="absolute right-40">
                                 <svg className="fill-current w-8 h-8" xmlns="http://www.w3.org/2000/svg"

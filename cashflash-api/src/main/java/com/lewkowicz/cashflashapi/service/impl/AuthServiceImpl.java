@@ -6,7 +6,6 @@ import com.lewkowicz.cashflashapi.dto.UserDto;
 import com.lewkowicz.cashflashapi.entity.User;
 import com.lewkowicz.cashflashapi.exception.AccountAlreadyExistsException;
 import com.lewkowicz.cashflashapi.exception.LoginFailedException;
-import com.lewkowicz.cashflashapi.exception.ResourceNotFoundException;
 import com.lewkowicz.cashflashapi.repository.UserRepository;
 import com.lewkowicz.cashflashapi.security.TokenService;
 import com.lewkowicz.cashflashapi.service.IAuthService;
@@ -14,13 +13,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -46,7 +41,7 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public Map<String, Object> signin(LoginCredentialsDto loginRequest) {
+    public String signin(LoginCredentialsDto loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -55,17 +50,7 @@ public class AuthServiceImpl implements IAuthService {
                     )
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = tokenService.generateToken(authentication);
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String role = userDetails.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .findFirst()
-                    .orElseThrow(() -> new ResourceNotFoundException(AuthConstants.ROLE_NOT_FOUND));
-            Map<String, Object> response = new HashMap<>();
-            response.put("token", jwt);
-            response.put("role", role);
-            response.put("email", loginRequest.getEmail());
-            return response;
+            return tokenService.generateToken(authentication);
         } catch (Exception e) {
             throw new LoginFailedException(AuthConstants.LOGIN_FAILED);
         }

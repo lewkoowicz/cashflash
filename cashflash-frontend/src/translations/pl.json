@@ -33,6 +33,12 @@
     "dark": "Ciemny",
     "save": "Zapisz"
   },
+  "defaultLanguage": {
+    "setDefaultLanguage": "Zmień domyślny język",
+    "polish": "Polski",
+    "english": "Angielski",
+    "save": "Zapisz"
+  },
   "cashflash": {
     "investmentCalculator": "Kalkulator Inwestycji",
     "budgetTracker": "Monitor budżetu",

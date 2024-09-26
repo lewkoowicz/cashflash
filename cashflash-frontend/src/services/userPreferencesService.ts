@@ -34,13 +34,13 @@ export const setDefaultTheme = async (userId: number, theme: string, email: stri
     }
 }
 
-export const setDefaultLanguage = async (userId: number, languageApi: string, email: string, language: string, token: string) => {
+export const setDefaultLanguage = async (userId: number, email: string, language: string, token: string) => {
     const headers = apiConfig.getHeaders(language, token);
     try {
         const response = await axios.post(
-            `${BASE_URL}/set-default-theme?userId=${userId}&language=${languageApi}&email=${email}`, {
-                headers
-            });
+            `${BASE_URL}/set-default-language?userId=${userId}&language=${language}&email=${email}`,
+            {},
+            {headers});
         return response.data;
     } catch (error) {
         if (isAxiosError(error) && error.response) {

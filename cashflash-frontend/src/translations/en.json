@@ -33,6 +33,12 @@
     "dark": "Dark",
     "save": "Save"
   },
+  "defaultLanguage": {
+    "setDefaultLanguage": "Set default language",
+    "polish": "Polish",
+    "english": "English",
+    "save": "Save"
+  },
   "cashflash": {
     "investmentCalculator": "Investment Calculator",
     "budgetTracker": "Budget Tracker",

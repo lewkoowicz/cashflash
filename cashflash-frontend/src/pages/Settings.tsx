@@ -13,6 +13,10 @@ const Settings = () => {
         navigate('/default-theme')
     }
 
+    const handleChangeLanguage = () => {
+        navigate('/default-language')
+    }
+
     return (
         <div className="flex flex-col w-full max-w-sm items-center justify-center p-4">
             <div className="form-control w-full max-w-sm p-8 bg-base-200 shadow-xl rounded-lg">
@@ -32,8 +36,7 @@ const Settings = () => {
                     </Button>
                     <Button className="btn-primary w-full mt-4 flex items-center justify-center relative"
                             text=""
-                            onClick={() => {
-                            }}>
+                            onClick={handleChangeLanguage}>
                         <div className="absolute left-8">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                  className="w-6 h-6 mr-1 fill-current">

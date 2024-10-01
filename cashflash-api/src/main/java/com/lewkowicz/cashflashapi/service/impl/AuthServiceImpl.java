@@ -65,7 +65,10 @@ public class AuthServiceImpl implements IAuthService {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(
                 AuthConstants.USER_NOT_FOUND));
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
-            throw new InvalidCredentialsException(AuthConstants.INVALID_CREDENTIALS);
+            throw new InvalidCredentialsException(AuthConstants.INCORRECT_CURRENT_PASSWORD);
+        }
+        if (passwordEncoder.matches(newPassword, user.getPassword())) {
+            throw new InvalidCredentialsException(AuthConstants.PASSWORDS_CANNOT_BE_THE_SAME);
         }
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);

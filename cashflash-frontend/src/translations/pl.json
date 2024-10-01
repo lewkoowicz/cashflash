@@ -39,6 +39,13 @@
     "english": "Angielski",
     "save": "Zapisz"
   },
+  "changePassword": {
+    "changePassword": "Zmień hasło",
+    "currentPassword": "Obecne hasło",
+    "newPassword": "Nowe hasło",
+    "confirmNewPassword": "Potwierdź nowe hasło",
+    "submit": "Zapisz"
+  },
   "cashflash": {
     "investmentCalculator": "Kalkulator Inwestycji",
     "budgetTracker": "Monitor budżetu",

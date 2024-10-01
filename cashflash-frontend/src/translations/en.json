@@ -39,6 +39,13 @@
     "english": "English",
     "save": "Save"
   },
+  "changePassword": {
+    "changePassword": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "submit": "Submit"
+  },
   "cashflash": {
     "investmentCalculator": "Investment Calculator",
     "budgetTracker": "Budget Tracker",

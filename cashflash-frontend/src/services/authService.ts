@@ -1,5 +1,5 @@
 import axios from "axios";
-import {apiConfig, BASE_URL} from "./apiConfig.ts";
+import {apiConfig, BASE_URL, PasswordChange} from "./index.ts";
 
 export const signin = async (email: string, password: string, language: string) => {
     const headers = apiConfig.getHeaders(language);
@@ -39,3 +39,19 @@ export const signout = async (language: string) => {
         throw new Error('Unknown error');
     }
 };
+
+export const changePassword = async (data: PasswordChange, language: string, token: string, email: string) => {
+    const headers = apiConfig.getHeaders(language, token);
+    try {
+        const response = await axios.post(`${BASE_URL}/change-password?email=${email}`,
+            data,
+            {headers}
+        );
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.errorMessage);
+        }
+        throw new Error('Unknown error');
+    }
+}

@@ -9,5 +9,8 @@ public class AuthConstants {
     public static final String ACCOUNT_ALREADY_EXISTS = "messages.accountAlreadyExists";
     public static final String LOGIN_FAILED = "messages.loginFailed";
     public static final String LOGOUT_SUCCESS = "messages.logoutSuccess";
+    public static final String USER_NOT_FOUND = "messages.userNotFound";
+    public static final String INVALID_CREDENTIALS = "messages.invalidCredentials";
+    public static final String PASSWORD_CHANGED = "messages.passwordChanged";
 
 }

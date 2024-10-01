@@ -1,6 +1,6 @@
 package com.lewkowicz.cashflashapi.service.impl;
 
-import com.lewkowicz.cashflashapi.constants.UserPreferencesConstants;
+import com.lewkowicz.cashflashapi.constants.AuthConstants;
 import com.lewkowicz.cashflashapi.dto.UserPreferencesDto;
 import com.lewkowicz.cashflashapi.entity.User;
 import com.lewkowicz.cashflashapi.entity.UserPreferences;
@@ -45,7 +45,7 @@ public class UserPreferencesServiceImpl implements IUserPreferencesService {
     @Transactional(readOnly = true)
     public UserPreferencesDto getUserPreferences(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException(getMessage(UserPreferencesConstants.USER_NOT_FOUND)));
+                .orElseThrow(() -> new ResourceNotFoundException(getMessage(AuthConstants.USER_NOT_FOUND)));
         if (user.getPreferences() == null) {
             return null;
         }
@@ -54,7 +54,7 @@ public class UserPreferencesServiceImpl implements IUserPreferencesService {
 
     private UserPreferences getUserPreferencesOrCreate(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException(getMessage(UserPreferencesConstants.USER_NOT_FOUND)));
+                .orElseThrow(() -> new ResourceNotFoundException(getMessage(AuthConstants.USER_NOT_FOUND)));
 
         if (user.getPreferences() == null) {
             UserPreferences newPreferences = new UserPreferences();

@@ -2,6 +2,7 @@ package com.lewkowicz.cashflashapi.controller;
 
 import com.lewkowicz.cashflashapi.constants.AuthConstants;
 import com.lewkowicz.cashflashapi.dto.LoginCredentialsDto;
+import com.lewkowicz.cashflashapi.dto.PasswordChangeDto;
 import com.lewkowicz.cashflashapi.dto.ResponseDto;
 import com.lewkowicz.cashflashapi.dto.UserDto;
 import com.lewkowicz.cashflashapi.service.impl.AuthServiceImpl;
@@ -14,6 +15,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.validation.annotation.Validated;
@@ -36,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signup(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<ResponseDto> signup(@Valid @RequestBody UserDto userDto) {
         authService.signup(userDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -50,7 +52,7 @@ public class AuthController {
     }
 
     @PostMapping("/sign-out")
-    public ResponseEntity<?> signout(HttpServletRequest request) {
+    public ResponseEntity<ResponseDto> signout(HttpServletRequest request) {
         SecurityContextHolder.clearContext();
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -59,6 +61,15 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseDto(HttpStatus.OK.toString(), getMessage(AuthConstants.LOGOUT_SUCCESS)));
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<ResponseDto> changePassword(@Valid @RequestBody PasswordChangeDto passwordChangeDto, Authentication authentication) {
+        String email = authentication.getName();
+        authService.changePassword(email, passwordChangeDto.getCurrentPassword(), passwordChangeDto.getNewPassword());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseDto(HttpStatus.OK.toString(), getMessage(AuthConstants.PASSWORD_CHANGED)));
     }
 
     private String getMessage(String key) {

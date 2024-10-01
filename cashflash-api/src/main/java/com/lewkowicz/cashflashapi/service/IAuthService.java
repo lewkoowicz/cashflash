@@ -9,4 +9,6 @@ public interface IAuthService {
 
     String signin(LoginCredentialsDto loginRequest);
 
+    void changePassword(String email, String currentPassword, String newPassword);
+
 }

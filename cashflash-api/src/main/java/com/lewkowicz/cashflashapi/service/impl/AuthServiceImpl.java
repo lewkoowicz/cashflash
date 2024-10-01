@@ -5,7 +5,9 @@ import com.lewkowicz.cashflashapi.dto.LoginCredentialsDto;
 import com.lewkowicz.cashflashapi.dto.UserDto;
 import com.lewkowicz.cashflashapi.entity.User;
 import com.lewkowicz.cashflashapi.exception.AccountAlreadyExistsException;
+import com.lewkowicz.cashflashapi.exception.InvalidCredentialsException;
 import com.lewkowicz.cashflashapi.exception.LoginFailedException;
+import com.lewkowicz.cashflashapi.exception.ResourceNotFoundException;
 import com.lewkowicz.cashflashapi.repository.UserRepository;
 import com.lewkowicz.cashflashapi.security.TokenService;
 import com.lewkowicz.cashflashapi.service.IAuthService;
@@ -14,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -26,6 +29,7 @@ public class AuthServiceImpl implements IAuthService {
     private final UserDetailsServiceImpl userDetailsService;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void signup(UserDto userDto) {
@@ -54,6 +58,17 @@ public class AuthServiceImpl implements IAuthService {
         } catch (Exception e) {
             throw new LoginFailedException(AuthConstants.LOGIN_FAILED);
         }
+    }
+
+    @Override
+    public void changePassword(String email, String currentPassword, String newPassword) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(
+                AuthConstants.USER_NOT_FOUND));
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new InvalidCredentialsException(AuthConstants.INVALID_CREDENTIALS);
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 
 }

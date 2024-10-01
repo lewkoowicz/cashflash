@@ -5,7 +5,8 @@ export const decodeToken = (token: string) => {
         const decoded: any = jwtDecode(token);
         const userId = decoded.userId;
         const email = decoded.sub;
-        return {userId, email};
+        const provider = decoded.provider;
+        return {userId, email, provider};
     } catch (error) {
         console.error(error);
         return null;

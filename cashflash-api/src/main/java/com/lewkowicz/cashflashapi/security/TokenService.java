@@ -4,6 +4,7 @@ import com.lewkowicz.cashflashapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -28,14 +29,20 @@ public class TokenService {
         String email = authentication.getName();
         String userId = fetchUserIdByEmail(email);
 
-        JwtClaimsSet claims = JwtClaimsSet.builder()
+        JwtClaimsSet.Builder claimsBuilder = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plus(24, ChronoUnit.HOURS))
                 .subject(email)
                 .claim("scope", authorities)
-                .claim("userId", userId)
-                .build();
+                .claim("userId", userId);
+
+        if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
+            String provider = oauthToken.getAuthorizedClientRegistrationId();
+            claimsBuilder.claim("provider", provider);
+        }
+
+        JwtClaimsSet claims = claimsBuilder.build();
 
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }

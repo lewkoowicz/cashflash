@@ -1,20 +1,29 @@
-import {useLanguage} from "../context";
+import {useAuth, useLanguage} from "../context";
 import {translations} from "../translations/translations.ts";
 import {Button} from "../components/ui";
 import {useNavigate} from "react-router-dom";
+import {decodeToken} from "../utils";
 
 const Settings = () => {
     const {language} = useLanguage();
+    const {token} = useAuth();
     const navigate = useNavigate();
 
     const t = translations[language];
 
+    const decoded = decodeToken(token);
+    const isPasswordChangeDisabled = decoded?.provider !== undefined;
+
     const handleChangeTheme = () => {
-        navigate('/default-theme')
+        navigate('/default-theme');
     }
 
     const handleChangeLanguage = () => {
-        navigate('/default-language')
+        navigate('/default-language');
+    }
+
+    const handlePasswordChange = () => {
+        navigate('/password-change');
     }
 
     return (
@@ -48,8 +57,8 @@ const Settings = () => {
                     </Button>
                     <Button className="btn-primary w-full mt-4 flex items-center justify-center relative"
                             text=""
-                            onClick={() => {
-                            }}>
+                            onClick={handlePasswordChange}
+                            disabled={isPasswordChangeDisabled}>
                         <div className="absolute left-8">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                  className="w-6 h-6 mr-1 fill-current">

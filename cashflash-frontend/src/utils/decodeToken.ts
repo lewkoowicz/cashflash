@@ -6,7 +6,8 @@ export const decodeToken = (token: string) => {
         const userId = decoded.userId;
         const email = decoded.sub;
         const provider = decoded.provider;
-        return {userId, email, provider};
+        const exp = decoded.exp;
+        return {userId, email, provider, exp};
     } catch (error) {
         console.error(error);
         return null;

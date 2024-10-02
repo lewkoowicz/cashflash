@@ -54,6 +54,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         }, 500);
     };
 
+    const checkTokenExpiration = () => {
+        const currentToken = localStorage.getItem('token');
+        if (currentToken) {
+            const decodedToken = decodeToken(currentToken);
+            if (decodedToken && decodedToken.exp) {
+                const currentTime = Math.floor(Date.now() / 1000);
+                if (decodedToken.exp < currentTime) {
+                    signout().then();
+                }
+            }
+        }
+    };
+
     useEffect(() => {
         const handleAuthenticationFlow = async () => {
             const searchParams = new URLSearchParams(window.location.search);
@@ -81,6 +94,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         };
 
         handleAuthenticationFlow().then();
+
+        checkTokenExpiration();
+
+        const intervalId = setInterval(checkTokenExpiration, 60000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
     }, []);
 
     return (

@@ -26,7 +26,7 @@ public class SecurityConfig {
         return http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("api/csrf-token", "/api/sign-in", "/api/sign-up", "/api/sign-out", "/api/create", "/api/check-auth").permitAll()
+                        .requestMatchers("api/csrf-token", "/api/sign-in", "/api/sign-up", "/api/sign-out", "/api/create").permitAll()
                         .requestMatchers("/api/**").access(emailAuthorizationManager)
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/oauth2/authorization/google"))
                 .logout(logout -> logout
-                        .deleteCookies("JSESSIONID", "token")
+                        .deleteCookies("JSESSIONID")
                         .clearAuthentication(true)
                         .invalidateHttpSession(true))
                 .csrf(csrf -> csrf

@@ -45,10 +45,10 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
                         oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
                 SecurityContextHolder.getContext().setAuthentication(newAuth);
 
-                tokenService.generateTokenAndSetCookie(newAuth, response);
+                String jwt = tokenService.generateToken(newAuth);
 
                 try {
-                    response.sendRedirect(frontendUrl + "?user=user");
+                    response.sendRedirect(frontendUrl + "?token=" + jwt);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -60,7 +60,7 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
                 userRepository.save(newUser);
 
                 try {
-                    response.sendRedirect(frontendUrl + "?token=newuser");
+                    response.sendRedirect(frontendUrl + "?token=oauth");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

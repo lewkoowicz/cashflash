@@ -7,7 +7,6 @@ import com.lewkowicz.cashflashapi.dto.ResponseDto;
 import com.lewkowicz.cashflashapi.dto.UserDto;
 import com.lewkowicz.cashflashapi.service.impl.AuthServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -47,21 +46,9 @@ public class AuthController {
     }
 
     @PostMapping("/sign-in")
-    public void authenticateUser(@Valid @RequestBody LoginCredentialsDto loginRequest, HttpServletResponse response) {
-        authService.signin(loginRequest, response);
-    }
-
-    @GetMapping("/check-auth")
-    public ResponseEntity<ResponseDto> checkAuth(HttpServletRequest request) {
-        if (authService.checkAuth(request)) {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(new ResponseDto(HttpStatus.OK.toString(), "Authenticated"));
-        } else {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(new ResponseDto(HttpStatus.UNAUTHORIZED.toString(), "Not authenticated"));
-        }
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginCredentialsDto loginRequest) {
+        String response = authService.signin(loginRequest);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/sign-out")

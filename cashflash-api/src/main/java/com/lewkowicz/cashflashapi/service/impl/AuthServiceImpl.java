@@ -9,14 +9,19 @@ import com.lewkowicz.cashflashapi.exception.InvalidCredentialsException;
 import com.lewkowicz.cashflashapi.exception.LoginFailedException;
 import com.lewkowicz.cashflashapi.exception.ResourceNotFoundException;
 import com.lewkowicz.cashflashapi.repository.UserRepository;
+import com.lewkowicz.cashflashapi.security.JwtConfigurer;
 import com.lewkowicz.cashflashapi.security.TokenService;
 import com.lewkowicz.cashflashapi.service.IAuthService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,6 +35,7 @@ public class AuthServiceImpl implements IAuthService {
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final JwtConfigurer jwtConfigurer;
 
     @Override
     public void signup(UserDto userDto) {
@@ -45,7 +51,7 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public String signin(LoginCredentialsDto loginRequest) {
+    public void signin(LoginCredentialsDto loginRequest, HttpServletResponse response) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -54,7 +60,7 @@ public class AuthServiceImpl implements IAuthService {
                     )
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return tokenService.generateToken(authentication);
+            tokenService.generateTokenAndSetCookie(authentication, response);
         } catch (Exception e) {
             throw new LoginFailedException(AuthConstants.LOGIN_FAILED);
         }
@@ -74,4 +80,22 @@ public class AuthServiceImpl implements IAuthService {
         userRepository.save(user);
     }
 
+    @Override
+    public boolean checkAuth(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    String token = cookie.getValue();
+                    try {
+                        jwtConfigurer.jwtDecoder().decode(token);
+                        return true;
+                    } catch (JwtException e) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

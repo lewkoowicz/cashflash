@@ -1,6 +1,8 @@
 package com.lewkowicz.cashflashapi.security;
 
 import com.lewkowicz.cashflashapi.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +22,15 @@ public class TokenService {
 
     private final JwtEncoder encoder;
     private final UserRepository userRepository;
+
+    public void generateTokenAndSetCookie(Authentication authentication, HttpServletResponse response) {
+        String token = generateToken(authentication);
+        Cookie cookie = new Cookie("token", token);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(7 * 24 * 60 * 60);
+        response.addCookie(cookie);
+    }
 
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();

@@ -55,3 +55,19 @@ export const changePassword = async (data: PasswordChange, language: string, tok
         throw new Error('Unknown error');
     }
 }
+
+export const deleteAccount = async (email: string, deleteString: string, language: string, token: string) => {
+    const headers = apiConfig.getHeaders(language, token);
+    try {
+        const response = await axios.post(`${BASE_URL}/delete-account?email=${email}&delete=${deleteString}`,
+            {},
+            {headers}
+        );
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.errorMessage);
+        }
+        throw new Error('Unknown error');
+    }
+}

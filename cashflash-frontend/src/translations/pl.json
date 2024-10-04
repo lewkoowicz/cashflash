@@ -46,6 +46,11 @@
     "confirmNewPassword": "Potwierdź nowe hasło",
     "submit": "Zapisz"
   },
+  "deleteAccount": {
+    "deleteAccount": "Usuń konto",
+    "typeInDelete": "Proszę wpisz poniżej 'DELETE'",
+    "delete": "Usuń"
+  },
   "cashflash": {
     "investmentCalculator": "Kalkulator Inwestycji",
     "budgetTracker": "Monitor budżetu",

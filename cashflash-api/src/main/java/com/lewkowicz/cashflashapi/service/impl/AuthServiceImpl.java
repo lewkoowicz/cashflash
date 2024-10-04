@@ -77,11 +77,11 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public void deleteAccount(LoginCredentialsDto loginCredentialsDto) {
-        User user = userRepository.findByEmail(loginCredentialsDto.getEmail()).orElseThrow(() -> new ResourceNotFoundException(
+    public void deleteAccount(String email, String delete) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(
                 AuthConstants.USER_NOT_FOUND));
-        if (!passwordEncoder.matches(loginCredentialsDto.getPassword(), user.getPassword())) {
-            throw new InvalidCredentialsException(AuthConstants.INCORRECT_PASSWORD);
+        if (!"DELETE".equals(delete)) {
+            throw new InvalidCredentialsException(AuthConstants.MESSAGE_DELETE);
         }
         if (user.getPreferences() != null) {
             userPreferencesRepository.delete(user.getPreferences());

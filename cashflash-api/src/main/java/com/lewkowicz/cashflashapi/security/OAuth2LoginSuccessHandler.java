@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -31,43 +30,67 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
-        OAuth2AuthenticationToken oAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
-        if ("google".equals(oAuth2AuthenticationToken.getAuthorizedClientRegistrationId())) {
-            DefaultOAuth2User principal = (DefaultOAuth2User) authentication.getPrincipal();
-            Map<String, Object> attributes = principal.getAttributes();
-            String email = attributes.get("email").toString();
-            userRepository.findByEmail(email).ifPresentOrElse(user -> {
-                DefaultOAuth2User newUser = new DefaultOAuth2User(
-                        List.of(new SimpleGrantedAuthority(user.getRole())),
-                        attributes, "email");
-                Authentication newAuth = new OAuth2AuthenticationToken(
-                        newUser, List.of(new SimpleGrantedAuthority(user.getRole())),
-                        oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
-                SecurityContextHolder.getContext().setAuthentication(newAuth);
-
-                String jwt = tokenService.generateToken(newAuth);
-
-                try {
-                    response.sendRedirect(frontendUrl + "?token=" + jwt);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }, () -> {
-                User newUser = new User();
-                newUser.setRole("USER");
-                newUser.setEmail(email);
-                newUser.setPassword("");
-                userRepository.save(newUser);
-
-                try {
-                    response.sendRedirect(frontendUrl + "?token=oauth");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+        if (!(authentication instanceof OAuth2AuthenticationToken oAuth2AuthenticationToken)) {
+            super.onAuthenticationSuccess(request, response, authentication);
+            return;
         }
+
+        if (!"google".equals(oAuth2AuthenticationToken.getAuthorizedClientRegistrationId())) {
+            super.onAuthenticationSuccess(request, response, authentication);
+            return;
+        }
+
+        DefaultOAuth2User principal = (DefaultOAuth2User) authentication.getPrincipal();
+        String email = principal.getAttribute("email");
+
+        userRepository.findByEmail(email)
+                .ifPresentOrElse(
+                        user -> handleExistingUser(response, oAuth2AuthenticationToken, principal, user),
+                        () -> handleNewUser(response, email)
+                );
+
         this.setAlwaysUseDefaultTargetUrl(true);
         this.setDefaultTargetUrl(frontendUrl);
         super.onAuthenticationSuccess(request, response, authentication);
+    }
+
+    private void handleExistingUser(HttpServletResponse response, OAuth2AuthenticationToken oAuth2AuthenticationToken, DefaultOAuth2User principal, User user) {
+        Authentication newAuth = createNewAuthentication(oAuth2AuthenticationToken, principal, user);
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+        String jwt = tokenService.generateToken(newAuth);
+        redirectToFrontend(response, "?token=" + jwt);
+    }
+
+    private Authentication createNewAuthentication(OAuth2AuthenticationToken oAuth2AuthenticationToken, DefaultOAuth2User principal, User user) {
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
+        DefaultOAuth2User newUser = new DefaultOAuth2User(
+                List.of(authority),
+                principal.getAttributes(),
+                "email"
+        );
+        return new OAuth2AuthenticationToken(
+                newUser,
+                List.of(authority),
+                oAuth2AuthenticationToken.getAuthorizedClientRegistrationId()
+        );
+    }
+
+    private void handleNewUser(HttpServletResponse response, String email) {
+        User newUser = new User();
+        newUser.setRole("USER");
+        newUser.setEmail(email);
+        newUser.setPassword("");
+        userRepository.save(newUser);
+
+        redirectToFrontend(response, "?token=oauth");
+    }
+
+    private void redirectToFrontend(HttpServletResponse response, String queryParams) {
+        try {
+            response.sendRedirect(frontendUrl + queryParams);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to redirect to frontend", e);
+        }
     }
 }

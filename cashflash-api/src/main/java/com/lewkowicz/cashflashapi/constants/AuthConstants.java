@@ -13,5 +13,6 @@ public class AuthConstants {
     public static final String INCORRECT_CURRENT_PASSWORD = "messages.incorrectCurrentPassword";
     public static final String PASSWORDS_CANNOT_BE_THE_SAME = "messages.passwordsCannotBeTheSame";
     public static final String PASSWORD_CHANGED = "messages.passwordChanged";
+    public static final String INCORRECT_PASSWORD = "messages.incorrectPassword";
 
 }

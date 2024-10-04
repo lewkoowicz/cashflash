@@ -72,6 +72,12 @@ public class AuthController {
                 .body(new ResponseDto(HttpStatus.OK.toString(), getMessage(AuthConstants.PASSWORD_CHANGED)));
     }
 
+    @PostMapping("/delete-account")
+    public ResponseEntity<?> deleteAccount(@Valid @RequestBody LoginCredentialsDto loginCredentialsDto) {
+        authService.deleteAccount(loginCredentialsDto);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     private String getMessage(String key) {
         Locale locale = LocaleContextHolder.getLocale();
         return messageSource.getMessage(key, null, locale);

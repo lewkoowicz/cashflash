@@ -8,6 +8,7 @@ import com.lewkowicz.cashflashapi.exception.AccountAlreadyExistsException;
 import com.lewkowicz.cashflashapi.exception.InvalidCredentialsException;
 import com.lewkowicz.cashflashapi.exception.LoginFailedException;
 import com.lewkowicz.cashflashapi.exception.ResourceNotFoundException;
+import com.lewkowicz.cashflashapi.repository.UserPreferencesRepository;
 import com.lewkowicz.cashflashapi.repository.UserRepository;
 import com.lewkowicz.cashflashapi.security.TokenService;
 import com.lewkowicz.cashflashapi.service.IAuthService;
@@ -26,6 +27,7 @@ import java.util.Optional;
 public class AuthServiceImpl implements IAuthService {
 
     private final UserRepository userRepository;
+    private final UserPreferencesRepository userPreferencesRepository;
     private final UserDetailsServiceImpl userDetailsService;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
@@ -72,6 +74,19 @@ public class AuthServiceImpl implements IAuthService {
         }
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
+    }
+
+    @Override
+    public void deleteAccount(LoginCredentialsDto loginCredentialsDto) {
+        User user = userRepository.findByEmail(loginCredentialsDto.getEmail()).orElseThrow(() -> new ResourceNotFoundException(
+                AuthConstants.USER_NOT_FOUND));
+        if (!passwordEncoder.matches(loginCredentialsDto.getPassword(), user.getPassword())) {
+            throw new InvalidCredentialsException(AuthConstants.INCORRECT_PASSWORD);
+        }
+        if (user.getPreferences() != null) {
+            userPreferencesRepository.delete(user.getPreferences());
+        }
+        userRepository.delete(user);
     }
 
 }

@@ -11,4 +11,6 @@ public interface IAuthService {
 
     void changePassword(String email, String currentPassword, String newPassword);
 
+    void deleteAccount(LoginCredentialsDto loginCredentialsDto);
+
 }

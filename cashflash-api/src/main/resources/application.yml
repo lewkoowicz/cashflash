@@ -39,6 +39,9 @@ spring:
           auth: true
           starttls:
             enable: true
+  threads:
+    virtual:
+      enabled: true
 
 rsa:
   public-key: classpath:certs/public.pem

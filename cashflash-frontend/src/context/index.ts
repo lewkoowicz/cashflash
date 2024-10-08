@@ -1,12 +1,4 @@
-export {ThemeContext} from "./theme/ThemeContext";
-export {ThemeProvider} from "./theme/ThemeProvider";
-export {useTheme} from "./theme/useTheme";
-export {LanguageProvider} from "./language/LanguageProvider";
-export {LanguageContext} from "./language/LanguageContext";
-export {useLanguage} from "./language/useLanguage";
-export {AuthProvider} from "./auth/AuthProvider";
-export {AuthContext} from "./auth/AuthContext";
-export {useAuth} from "./auth/useAuth";
-export {CsrfProvider} from "./csrf/CsrfProvider";
-export {CsrfContext} from "./csrf/CsrfContext";
-export {useCsrf} from "./csrf/useCsrf";
+export {ThemeProvider, useTheme} from "./ThemeProvider.tsx";
+export {LanguageProvider, useLanguage} from "./LanguageProvider.tsx";
+export {AuthProvider, useAuth} from "./AuthProvider.tsx";
+export {CsrfProvider, useCsrf} from "./CsrfProvider.tsx";

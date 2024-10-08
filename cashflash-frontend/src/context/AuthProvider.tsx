@@ -1,7 +1,17 @@
-import React, {ReactNode, useEffect, useState} from 'react';
-import {AuthContext, useLanguage} from '../index.ts';
-import {getUserPreferences, signin as apiLogin, signout as apiSignout, signup as apiSignup} from "../../services";
-import {decodeToken} from "../../utils";
+import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react';
+import {useLanguage} from './index.ts';
+import {getUserPreferences, signin as apiLogin, signout as apiSignout, signup as apiSignup} from "../services";
+import {decodeToken} from "../utils";
+
+interface AuthContextType {
+    isSignedIn: boolean;
+    token: string | '';
+    signin: (email: string, password: string) => Promise<void>;
+    signup: (email: string, password: string) => Promise<void>;
+    signout: () => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
     children: ReactNode;
@@ -109,4 +119,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
             {children}
         </AuthContext.Provider>
     );
+};
+
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (context === undefined) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
 };

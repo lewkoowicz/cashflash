@@ -1,7 +1,8 @@
-import React, {useCallback, useEffect, useState} from "react";
-import {CsrfContext} from "../index";
-import {getCsrfToken, setCsrfToken} from "../../services";
+import React, {createContext, useCallback, useContext, useEffect, useState} from "react";
+import {getCsrfToken, setCsrfToken} from "../services";
 import axios from "axios";
+
+const CsrfContext = createContext<{ csrfToken: string | null }>({csrfToken: null});
 
 export const CsrfProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
     const [csrfToken, setCsrfTokenState] = useState<string | null>(null);
@@ -33,3 +34,11 @@ export const CsrfProvider: React.FC<{ children: React.ReactNode }> = ({children}
         </CsrfContext.Provider>
     );
 };
+
+export const useCsrf = () => {
+    const context = useContext(CsrfContext);
+    if (context === undefined) {
+        throw new Error('useCsrf must be used within an CsrfProvider');
+    }
+    return context;
+}

@@ -6,7 +6,7 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@ToString(exclude = "preferences")
+@ToString(exclude = {"preferences", "passwordReset"})
 @AllArgsConstructor
 @NoArgsConstructor
 public class User extends BaseEntity {
@@ -26,5 +26,8 @@ public class User extends BaseEntity {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserPreferences preferences;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private PasswordReset passwordReset;
 
 }

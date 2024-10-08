@@ -54,61 +54,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(ResourceNotFoundException exception,
-                                                                            WebRequest webRequest) {
-        String message = messageSource.getMessage(exception.getMessage(), null, LocaleContextHolder.getLocale());
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-                webRequest.getDescription(false),
-                HttpStatus.NOT_FOUND,
-                message,
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(AccountAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDto> handleAccountAlreadyExistsException(AccountAlreadyExistsException exception,
-                                                                                WebRequest webRequest) {
-        String message = messageSource.getMessage(exception.getMessage(), null, LocaleContextHolder.getLocale());
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-                webRequest.getDescription(false),
-                HttpStatus.BAD_REQUEST,
-                message,
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(LoginFailedException.class)
-    public ResponseEntity<ErrorResponseDto> handleLoginFailedException(LoginFailedException exception,
-                                                                       WebRequest webRequest) {
-        String message = messageSource.getMessage(exception.getMessage(), null, LocaleContextHolder.getLocale());
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-                webRequest.getDescription(false),
-                HttpStatus.BAD_REQUEST,
-                message,
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(EmailSendException.class)
-    public ResponseEntity<ErrorResponseDto> handleEmailSendException(EmailSendException exception,
-                                                                     WebRequest webRequest) {
-        String message = messageSource.getMessage(exception.getMessage(), null, LocaleContextHolder.getLocale());
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-                webRequest.getDescription(false),
-                HttpStatus.BAD_REQUEST,
-                message,
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<ErrorResponseDto> handleInvalidCredentialsException(InvalidCredentialsException exception,
-                                                                              WebRequest webRequest) {
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorResponseDto> handleBadRequestException(BadRequestException exception,
+                                                                      WebRequest webRequest) {
         String message = messageSource.getMessage(exception.getMessage(), null, LocaleContextHolder.getLocale());
         ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
                 webRequest.getDescription(false),

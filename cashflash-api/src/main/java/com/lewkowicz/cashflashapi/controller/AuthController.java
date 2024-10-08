@@ -1,10 +1,7 @@
 package com.lewkowicz.cashflashapi.controller;
 
 import com.lewkowicz.cashflashapi.constants.AuthConstants;
-import com.lewkowicz.cashflashapi.dto.LoginCredentialsDto;
-import com.lewkowicz.cashflashapi.dto.PasswordChangeDto;
-import com.lewkowicz.cashflashapi.dto.ResponseDto;
-import com.lewkowicz.cashflashapi.dto.UserDto;
+import com.lewkowicz.cashflashapi.dto.*;
 import com.lewkowicz.cashflashapi.service.impl.AuthServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -33,8 +30,8 @@ public class AuthController {
     private final MessageSource messageSource;
 
     @GetMapping("/csrf-token")
-    public CsrfToken getCsrfToken(CsrfToken token) {
-        return token;
+    public String getCsrfToken(CsrfToken token) {
+        return token.getToken();
     }
 
     @PostMapping("/sign-up")
@@ -76,6 +73,22 @@ public class AuthController {
     public ResponseEntity<?> deleteAccount(@Valid @RequestParam String email, @RequestParam String delete) {
         authService.deleteAccount(email, delete);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ResponseDto> forgotPassword(@Valid @RequestBody PasswordForgotDto passwordForgotDto) {
+        authService.initiatePasswordReset(passwordForgotDto);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseDto(HttpStatus.OK.toString(), getMessage(AuthConstants.PASSWORD_RESET_REQUEST_RECEIVED)));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<ResponseDto> resetPassword(@Valid @RequestBody PasswordResetDto passwordResetDto) {
+        authService.resetPassword(passwordResetDto);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseDto(HttpStatus.OK.toString(), getMessage(AuthConstants.PASSWORD_SUCCESSFULLY_RESET)));
     }
 
     private String getMessage(String key) {

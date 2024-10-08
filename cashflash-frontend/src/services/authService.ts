@@ -71,3 +71,35 @@ export const deleteAccount = async (email: string, deleteString: string, languag
         throw new Error('Unknown error');
     }
 }
+
+export const forgotPasword = async (email: string, language: string) => {
+    const headers = apiConfig.getHeaders(language);
+    try {
+        const response = await axios.post(`${BASE_URL}/forgot-password`,
+            {email},
+            {headers}
+        );
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.errorMessage);
+        }
+        throw new Error('Unknown error');
+    }
+}
+
+export const resetPassword = async (token: string, password: string, language: string) => {
+    const headers = apiConfig.getHeaders(language);
+    try {
+        const response = await axios.post(`${BASE_URL}/reset-password`,
+            {token, password},
+            {headers}
+        );
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.errorMessage);
+        }
+        throw new Error('Unknown error');
+    }
+}

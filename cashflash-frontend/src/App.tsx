@@ -7,6 +7,8 @@ import {
     DefaultTheme,
     DeleteAccount,
     PasswordChange,
+    PasswordForgot,
+    PasswordReset,
     Settings,
     Signin,
     Signup
@@ -61,6 +63,16 @@ function App() {
                                     <Route path="/delete-account" element={
                                         <div className="flex-grow flex items-center justify-center">
                                             <DeleteAccount/>
+                                        </div>
+                                    }/>
+                                    <Route path="/password-forgot" element={
+                                        <div className="flex-grow flex items-center justify-center">
+                                            <PasswordForgot/>
+                                        </div>
+                                    }/>
+                                    <Route path="/password-reset" element={
+                                        <div className="flex-grow flex items-center justify-center">
+                                            <PasswordReset/>
                                         </div>
                                     }/>
                                     <Route path="/investment-calculator" element={

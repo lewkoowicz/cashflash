@@ -47,6 +47,8 @@ const Signin = () => {
                            placeholder=""
                            value={password}
                            onChange={e => setPassword(e.target.value)}/>
+                <Link to="/password-forgot"
+                      className="mt-2 text-blue-500 hover:text-blue-700">{t.signin.forgotPassword}</Link>
                 <Button className={"btn-primary mt-4"}
                         onClick={handleSubmit}
                         text={t.signin.signin}/>

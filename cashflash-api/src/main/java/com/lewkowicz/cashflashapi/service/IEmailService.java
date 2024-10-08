@@ -2,6 +2,6 @@ package com.lewkowicz.cashflashapi.service;
 
 public interface IEmailService {
 
-    void sendLoginNotification(String email);
+    void sendPasswordResetEmail(String email, String resetToken);
 
 }

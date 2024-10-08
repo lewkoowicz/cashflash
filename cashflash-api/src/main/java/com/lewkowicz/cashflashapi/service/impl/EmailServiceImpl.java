@@ -1,10 +1,11 @@
 package com.lewkowicz.cashflashapi.service.impl;
 
-import com.lewkowicz.cashflashapi.exception.EmailSendException;
+import com.lewkowicz.cashflashapi.exception.BadRequestException;
 import com.lewkowicz.cashflashapi.service.IEmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -24,18 +25,23 @@ public class EmailServiceImpl implements IEmailService {
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
 
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     @Override
-    public void sendLoginNotification(String email) {
+    public void sendPasswordResetEmail(String email, String resetToken) {
         if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("Email address cannot be null or empty");
         }
 
         Locale locale = LocaleContextHolder.getLocale();
         Context context = new Context(locale);
-        context.setVariable("email", email);
-        context.setVariable("loginTime", LocalDateTime.now());
+        context.setVariable("expirationTime", LocalDateTime.now().plusHours(1));
 
-        sendEmail(email, "test", context);
+        String resetUrl = frontendUrl + "/password-reset?resetToken=" + resetToken;
+        context.setVariable("resetUrl", resetUrl);
+
+        sendEmail(email, "password_reset", context);
     }
 
     private void sendEmail(String to, String templateName, Context context) {
@@ -49,7 +55,7 @@ public class EmailServiceImpl implements IEmailService {
             helper.setText(htmlContent, true);
             mailSender.send(message);
         } catch (MessagingException e) {
-            throw new EmailSendException("Failed to send email");
+            throw new BadRequestException("Failed to send email");
         }
     }
 

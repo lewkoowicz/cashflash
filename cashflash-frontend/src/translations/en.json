@@ -10,7 +10,8 @@
     "password": "Password",
     "signInWithGoogle": "Sign in with Google",
     "noAccount": "You don't have an account yet?",
-    "signup": "Sign up now"
+    "signup": "Sign up now",
+    "forgotPassword": "Forgot your password?"
   },
   "signup": {
     "signup": "Sign up",
@@ -50,6 +51,17 @@
     "deleteAccount": "Delete account",
     "typeInDelete": "Please type below 'DELETE'",
     "delete": "Delete"
+  },
+  "forgotPassword": {
+    "enterEmail": "Enter your email",
+    "email": "Email",
+    "send": "Send"
+  },
+  "resetPassword": {
+    "resetPassword": "Reset password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "reset": "Reset"
   },
   "cashflash": {
     "investmentCalculator": "Investment Calculator",

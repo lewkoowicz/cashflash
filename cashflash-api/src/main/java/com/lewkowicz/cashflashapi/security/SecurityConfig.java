@@ -27,7 +27,8 @@ public class SecurityConfig {
         return http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("api/csrf-token", "/api/sign-in", "/api/sign-up", "/api/sign-out", "/api/create").permitAll()
+                        .requestMatchers("api/csrf-token", "/api/sign-in", "/api/sign-up", "/api/sign-out",
+                                "/api/forgot-password", "/api/reset-password", "/api/create").permitAll()
                         .requestMatchers("/api/**").access(emailAuthorizationManager)
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

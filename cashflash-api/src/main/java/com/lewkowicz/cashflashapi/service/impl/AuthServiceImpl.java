@@ -103,6 +103,9 @@ public class AuthServiceImpl implements IAuthService {
     public void initiatePasswordReset(PasswordForgotDto passwordForgotDto) {
         User user = userRepository.findByEmail(passwordForgotDto.getEmail()).orElseThrow(() -> new BadRequestException(
                 AuthConstants.USER_NOT_FOUND));
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            throw new BadRequestException(AuthConstants.PASSWORD_RESET_DISABLED_FOR_OAUTH);
+        }
         if (user.getPasswordReset() != null) {
             passwordResetRepository.delete(user.getPasswordReset());
             passwordResetRepository.flush();

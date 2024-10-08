@@ -17,5 +17,6 @@ public class AuthConstants {
     public static final String RESET_TOKEN_EXPIRED = "messages.resetTokenExpired";
     public static final String PASSWORD_RESET_REQUEST_RECEIVED = "messages.passwordResetRequestReceived";
     public static final String PASSWORD_SUCCESSFULLY_RESET = "messages.passwordSuccessfullyReset";
+    public static final String PASSWORD_RESET_DISABLED_FOR_OAUTH = "messages.passwordResetDisabledForOAuth";
 
 }

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potwierdź swój adres e-mail</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+<div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+    <h1 style="color: #4a4a4a;">Potwierdź swój adres e-mail</h1>
+    <p>Cześć,</p>
+    <p>dziękujemy za rejestrację. Prosimy o potwierdzenie Twojego adresu e-mail, klikając poniższy przycisk:</p>
+    <p>
+        <a th:href="@{${confirmationUrl}}" style="background-color: #4CAF50; color: white; padding: 10px 15px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;">Potwierdź e-mail</a>
+    </p>
+    <p>Ten link wygaśnie za 24 godziny, o <span th:text="${#temporals.format(expirationTime, 'HH:mm')} + ' dnia ' + ${#temporals.format(expirationTime, 'd MMMM yyyy')}"/>.</p>
+    <p>Jeśli nie zakładałeś(aś) konta, prosimy zignorować tę wiadomość.</p>
+    <p>Pozdrawiamy,<br>Zespół Startuplew</p>
+</div>
+</body>
+</html>

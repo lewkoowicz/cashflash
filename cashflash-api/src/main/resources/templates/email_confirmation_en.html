@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Your Email</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+<div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+    <h1 style="color: #4a4a4a;">Confirm Your Email</h1>
+    <p>Hello,</p>
+    <p>thank you for signing up. Please confirm your email address by clicking the button below:</p>
+    <p>
+        <a th:href="@{${confirmationUrl}}" style="background-color: #4CAF50; color: white; padding: 10px 15px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;">Confirm Email</a>
+    </p>
+    <p>This link will expire in 24 hours, at <span th:text="${#temporals.format(expirationTime, 'HH:mm')} + ' on ' + ${#temporals.format(expirationTime, 'MMMM dd, yyyy')}"/>.</p>
+    <p>If you did not create an account, please ignore this email.</p>
+    <p>Best regards,<br>The Startuplew Team</p>
+</div>
+</body>
+</html>

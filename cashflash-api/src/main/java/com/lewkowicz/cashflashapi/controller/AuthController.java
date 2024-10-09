@@ -39,7 +39,15 @@ public class AuthController {
         authService.signup(userDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ResponseDto(HttpStatus.CREATED.toString(), getMessage(AuthConstants.ACCOUNT_CREATED)));
+                .body(new ResponseDto(HttpStatus.CREATED.toString(), getMessage(AuthConstants.CONFIRMATION_EMAIL_SENT)));
+    }
+
+    @PostMapping("/confirm-email")
+    public ResponseEntity<ResponseDto> confirmEmail(@RequestParam String token) {
+        authService.confirmEmail(token);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseDto(HttpStatus.OK.toString(), getMessage(AuthConstants.ACCOUNT_CREATED)));
     }
 
     @PostMapping("/sign-in")

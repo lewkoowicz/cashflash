@@ -8,3 +8,4 @@ export {default as PasswordChange} from './PasswordChange.tsx';
 export {default as DeleteAccount} from './DeleteAccount.tsx';
 export {default as PasswordForgot} from './PasswordForgot.tsx';
 export {default as PasswordReset} from './PasswordReset.tsx';
+export {default as ConfirmEmail} from './ConfirmEmail.tsx';

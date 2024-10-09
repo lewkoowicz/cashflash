@@ -29,6 +29,22 @@ public class EmailServiceImpl implements IEmailService {
     private String frontendUrl;
 
     @Override
+    public void sendConfirmationEmail(String email, String confirmationToken) {
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("Email address cannot be null or empty");
+        }
+
+        Locale locale = LocaleContextHolder.getLocale();
+        Context context = new Context(locale);
+        context.setVariable("expirationTime", LocalDateTime.now().plusHours(24));
+
+        String confirmationUrl = frontendUrl + "/confirm-email?confirmationToken=" + confirmationToken;
+        context.setVariable("confirmationUrl", confirmationUrl);
+
+        sendEmail(email, "email_confirmation", context);
+    }
+
+    @Override
     public void sendPasswordResetEmail(String email, String resetToken) {
         if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("Email address cannot be null or empty");

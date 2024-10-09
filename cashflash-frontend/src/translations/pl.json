@@ -21,6 +21,10 @@
     "passwordsDoNotMatch": "Hasła są niezgodne",
     "signupGoogle": "Zarejestruj się przez Google"
   },
+  "confirmEmail": {
+    "confirmEmail": "Potwierdź email",
+    "confirm": "Potwierdź"
+  },
   "settings": {
     "settings": "Ustawienia",
     "changeLanguage": "Zmień domyślny język",

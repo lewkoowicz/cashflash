@@ -9,6 +9,8 @@ public interface IAuthService {
 
     void signup(UserDto userDto);
 
+    void confirmEmail(String token);
+
     String signin(LoginCredentialsDto loginRequest);
 
     void changePassword(String email, String currentPassword, String newPassword);

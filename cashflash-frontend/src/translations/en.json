@@ -21,6 +21,10 @@
     "passwordsDoNotMatch": "Passwords do not match",
     "signupGoogle": "Sign up with Google"
   },
+  "confirmEmail": {
+    "confirmEmail": "Confirm email",
+    "confirm": "Confirm"
+  },
   "settings": {
     "settings": "Settings",
     "changeLanguage": "Change default language",

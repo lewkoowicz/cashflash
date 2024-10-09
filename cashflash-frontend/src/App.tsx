@@ -3,6 +3,7 @@ import {InvestmentCalculatorForm, InvestmentCalculatorResults} from "./component
 import {Navbar} from "./layouts";
 import {
     Cashflash,
+    ConfirmEmail,
     DefaultLanguage,
     DefaultTheme,
     DeleteAccount,
@@ -38,6 +39,11 @@ function App() {
                                     <Route path="/sign-up" element={
                                         <div className="flex-grow flex items-center justify-center">
                                             <Signup/>
+                                        </div>
+                                    }/>
+                                    <Route path="/confirm-email" element={
+                                        <div className="flex-grow flex items-center justify-center">
+                                            <ConfirmEmail/>
                                         </div>
                                     }/>
                                     <Route path="/settings" element={

@@ -6,14 +6,16 @@ import com.lewkowicz.cashflashapi.dto.PasswordForgotDto;
 import com.lewkowicz.cashflashapi.dto.PasswordResetDto;
 import com.lewkowicz.cashflashapi.dto.UserDto;
 import com.lewkowicz.cashflashapi.entity.PasswordReset;
+import com.lewkowicz.cashflashapi.entity.PendingRegistration;
 import com.lewkowicz.cashflashapi.entity.User;
 import com.lewkowicz.cashflashapi.exception.BadRequestException;
 import com.lewkowicz.cashflashapi.repository.PasswordResetRepository;
+import com.lewkowicz.cashflashapi.repository.PendingRegistrationRepository;
 import com.lewkowicz.cashflashapi.repository.UserPreferencesRepository;
 import com.lewkowicz.cashflashapi.repository.UserRepository;
 import com.lewkowicz.cashflashapi.security.TokenService;
 import com.lewkowicz.cashflashapi.service.IAuthService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,13 +29,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthServiceImpl implements IAuthService {
 
     private final UserRepository userRepository;
     private final UserPreferencesRepository userPreferencesRepository;
     private final PasswordResetRepository passwordResetRepository;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final PendingRegistrationRepository pendingRegistrationRepository;
     private final TokenService tokenService;
     private final EmailServiceImpl emailService;
     private final AuthenticationManager authenticationManager;
@@ -42,15 +44,46 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     @Transactional
     public void signup(UserDto userDto) {
-        Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
-        if (optionalUser.isPresent()) {
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new BadRequestException(AuthConstants.ACCOUNT_ALREADY_EXISTS);
         }
+        Optional<PendingRegistration> existingPendingRegistration = pendingRegistrationRepository.findByEmail(userDto.getEmail());
+        if (existingPendingRegistration.isPresent()) {
+            PendingRegistration pendingRegistration = existingPendingRegistration.get();
+            if (pendingRegistration.getConfirmationTokenExpiryDate().isBefore(LocalDateTime.now())) {
+                pendingRegistration.setPassword(passwordEncoder.encode(userDto.getPassword()));
+                pendingRegistration.setConfirmationToken(UUID.randomUUID().toString());
+                pendingRegistration.setConfirmationTokenExpiryDate(LocalDateTime.now().plusHours(24));
+                pendingRegistrationRepository.save(pendingRegistration);
+                emailService.sendConfirmationEmail(pendingRegistration.getEmail(), pendingRegistration.getConfirmationToken());
+            } else {
+                throw new BadRequestException(AuthConstants.CONFIRMATION_EMAIL_ALREADY_SENT);
+            }
+        } else {
+            PendingRegistration newPendingRegistration = new PendingRegistration();
+            newPendingRegistration.setEmail(userDto.getEmail());
+            newPendingRegistration.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            newPendingRegistration.setConfirmationToken(UUID.randomUUID().toString());
+            newPendingRegistration.setConfirmationTokenExpiryDate(LocalDateTime.now().plusHours(24));
+            pendingRegistrationRepository.save(newPendingRegistration);
+            emailService.sendConfirmationEmail(newPendingRegistration.getEmail(), newPendingRegistration.getConfirmationToken());
+        }
+    }
+
+    @Override
+    public void confirmEmail(String token) {
+        PendingRegistration pendingRegistration = pendingRegistrationRepository.findByConfirmationToken(token)
+                .orElseThrow(() -> new BadRequestException("Invalid token"));
+        if (pendingRegistration.getConfirmationTokenExpiryDate().isBefore(LocalDateTime.now())) {
+            pendingRegistrationRepository.delete(pendingRegistration);
+            throw new BadRequestException(AuthConstants.CONFIRMATION_TOKEN_EXPIRED);
+        }
         User user = new User();
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
+        user.setEmail(pendingRegistration.getEmail());
+        user.setPassword(pendingRegistration.getPassword());
         user.setRole("USER");
-        userDetailsService.saveUser(user);
+        userRepository.save(user);
+        pendingRegistrationRepository.delete(pendingRegistration);
     }
 
     @Override

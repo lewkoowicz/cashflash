@@ -1,0 +1,50 @@
+x-logging: &default-logging
+  driver: loki
+  options:
+    loki-url: 'http://localhost:3100/api/prom/push'
+    loki-pipeline-stages: |
+      - json:
+          expressions:
+            log: log
+      - labels:
+          log:
+
+services:
+  prometheus:
+    image: bitnami/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:main
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/dashboards:/etc/grafana/dashboards
+
+  loki:
+    image: grafana/loki
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/loki.yml
+    volumes:
+      - ./loki:/etc/loki
+    user: root
+
+  postgres-exporter:
+    image: bitnami/postgres-exporter
+    container_name: postgres-exporter
+    ports:
+      - "9187:9187"
+    environment:
+      DATA_SOURCE_NAME: "postgresql://${DB_USERNAME_LOCAL}:${DB_PASSWORD_LOCAL}@host.docker.internal:5432/cashflash?sslmode=disable"
+    restart: unless-stopped
+    logging: *default-logging

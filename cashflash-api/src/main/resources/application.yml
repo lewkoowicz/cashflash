@@ -43,6 +43,12 @@ spring:
     virtual:
       enabled: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+
 rsa:
   public-key: classpath:certs/public.pem
   private-key: classpath:certs/private.pem

@@ -28,7 +28,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("api/csrf-token", "/api/sign-in", "/api/sign-up", "/api/confirm-email",
-                                "/api/sign-out", "/api/forgot-password", "/api/reset-password", "/api/create").permitAll()
+                                "/api/sign-out", "/api/forgot-password", "/api/reset-password", "/actuator/prometheus",
+                                "/api/create").permitAll()
                         .requestMatchers("/api/**").access(emailAuthorizationManager)
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

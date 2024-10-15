@@ -7,7 +7,8 @@ export const decodeToken = (token: string) => {
         const email = decoded.sub;
         const provider = decoded.provider;
         const exp = decoded.exp;
-        return {userId, email, provider, exp};
+        const role = decoded.scope;
+        return {userId, email, provider, role, exp};
     } catch (error) {
         console.error(error);
         return null;

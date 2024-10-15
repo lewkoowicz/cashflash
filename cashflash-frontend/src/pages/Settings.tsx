@@ -14,6 +14,9 @@ const Settings = () => {
     const decoded = decodeToken(token);
     const isPasswordChangeDisabled = decoded?.provider !== undefined;
 
+    const isAdmin = decoded?.role === 'ROLE_SUPER_ADMIN';
+    console.log(decoded?.role);
+
     const handleChangeTheme = () => {
         navigate('/default-theme');
     }
@@ -30,11 +33,45 @@ const Settings = () => {
         navigate('/delete-account')
     }
 
+    const handleGrafana = () => {
+        window.location.href = `http://localhost:3000`;
+    }
+
+    const handlePgadmin = () => {
+        window.location.href = `http://localhost:9100`;
+    }
+
     return (
         <div className="flex flex-col w-full max-w-sm items-center justify-center p-4">
             <div className="form-control w-full max-w-sm p-8 bg-base-200 shadow-xl rounded-lg">
                 <h2 className="text-lg font-bold mb-4">{t.settings.settings}</h2>
                 <div className="relative group">
+                    {isAdmin && (
+                        <>
+                            <Button className="btn-primary w-full mt-4 flex items-center justify-center relative"
+                                    text="Grafana"
+                                    onClick={handleGrafana}>
+                                <div className="absolute left-8">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                                         className="w-6 h-6 mr-1 fill-current">
+                                        <path
+                                            d="M160 80c0-26.5 21.5-48 48-48l32 0c26.5 0 48 21.5 48 48l0 352c0 26.5-21.5 48-48 48l-32 0c-26.5 0-48-21.5-48-48l0-352zM0 272c0-26.5 21.5-48 48-48l32 0c26.5 0 48 21.5 48 48l0 160c0 26.5-21.5 48-48 48l-32 0c-26.5 0-48-21.5-48-48L0 272zM368 96l32 0c26.5 0 48 21.5 48 48l0 288c0 26.5-21.5 48-48 48l-32 0c-26.5 0-48-21.5-48-48l0-288c0-26.5 21.5-48 48-48z"/>
+                                    </svg>
+                                </div>
+                            </Button>
+                            <Button className="btn-primary w-full mt-4 flex items-center justify-center relative"
+                                    text="pgAdmin"
+                                    onClick={handlePgadmin}>
+                                <div className="absolute left-8">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                                         className="w-6 h-6 mr-1 fill-current">
+                                        <path
+                                            d="M448 80l0 48c0 44.2-100.3 80-224 80S0 172.2 0 128L0 80C0 35.8 100.3 0 224 0S448 35.8 448 80zM393.2 214.7c20.8-7.4 39.9-16.9 54.8-28.6L448 288c0 44.2-100.3 80-224 80S0 332.2 0 288L0 186.1c14.9 11.8 34 21.2 54.8 28.6C99.7 230.7 159.5 240 224 240s124.3-9.3 169.2-25.3zM0 346.1c14.9 11.8 34 21.2 54.8 28.6C99.7 390.7 159.5 400 224 400s124.3-9.3 169.2-25.3c20.8-7.4 39.9-16.9 54.8-28.6l0 85.9c0 44.2-100.3 80-224 80S0 476.2 0 432l0-85.9z"/>
+                                    </svg>
+                                </div>
+                            </Button>
+                        </>
+                    )}
                     <Button className="btn-primary w-full mt-4 flex items-center justify-center relative"
                             text=""
                             onClick={handleChangeTheme}>

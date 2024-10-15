@@ -49,7 +49,8 @@ const DeleteAccount = () => {
                            onChange={e => setDeleteString(e.target.value)}/>
                 <Button className="btn-error mt-4"
                         onClick={handleSubmit}
-                        text={t.deleteAccount.delete}/>
+                        text={t.deleteAccount.delete}
+                        disabled={deleteString !== "DELETE"}/>
             </div>
         </div>
     )

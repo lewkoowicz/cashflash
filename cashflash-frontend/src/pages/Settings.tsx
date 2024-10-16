@@ -15,7 +15,6 @@ const Settings = () => {
     const isPasswordChangeDisabled = decoded?.provider !== undefined;
 
     const isAdmin = decoded?.role === 'ROLE_SUPER_ADMIN';
-    console.log(decoded?.role);
 
     const handleChangeTheme = () => {
         navigate('/default-theme');
@@ -34,11 +33,11 @@ const Settings = () => {
     }
 
     const handleGrafana = () => {
-        window.location.href = `http://localhost:3000`;
+        window.open('http://localhost:3000');
     }
 
     const handlePgadmin = () => {
-        window.location.href = `http://localhost:9100`;
+        window.open('http://localhost:9100')
     }
 
     return (

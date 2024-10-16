@@ -9,10 +9,12 @@ const PasswordForgot = () => {
     const {language} = useLanguage();
     const {alertType, alertMessage, alertKey, showAlert} = useAlert();
     const [email, setEmail] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const t = translations[language];
 
     const handleSubmit = async () => {
+        setIsLoading(true);
         try {
             const data = await forgotPasword(email, language);
             showAlert('success', data.statusMsg);
@@ -20,6 +22,8 @@ const PasswordForgot = () => {
             if (error instanceof Error) {
                 showAlert('error', error.message);
             }
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -36,7 +40,8 @@ const PasswordForgot = () => {
                            onChange={e => setEmail(e.target.value)}/>
                 <Button className="btn-primary mt-4"
                         onClick={handleSubmit}
-                        text={t.forgotPassword.send}/>
+                        text={t.forgotPassword.send}
+                        disabled={isLoading}/>
             </div>
         </div>
     )

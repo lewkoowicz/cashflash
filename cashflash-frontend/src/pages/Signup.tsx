@@ -10,6 +10,7 @@ const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const {alertType, alertMessage, alertKey, showAlert} = useAlert();
     const navigate = useNavigate();
     const {language} = useLanguage();
@@ -21,6 +22,7 @@ const Signup = () => {
             showAlert('error', t.signup.passwordsDoNotMatch)
             return;
         }
+        setIsLoading(true);
         try {
             const data = await signup(email, password, language);
             showAlert('success', data.statusMsg);
@@ -31,6 +33,8 @@ const Signup = () => {
             if (error instanceof Error) {
                 showAlert('error', error.message);
             }
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -51,8 +55,14 @@ const Signup = () => {
                            onChange={e => setPassword(e.target.value)}/>
                 <FormInput label={t.signup.confirmPassword} type="password" placeholder="" value={confirmPassword}
                            onChange={e => setConfirmPassword(e.target.value)}/>
-                <Button className={"btn-primary mt-4"} onClick={handleSubmit} text={t.signup.signup}/>
-                <Button className={"btn-outline mt-4 flex items-center justify-center"} onClick={handleGoogleSignUp} text="">
+                <Button className={"btn-primary mt-4"}
+                        onClick={handleSubmit}
+                        text={t.signup.signup}
+                        disabled={isLoading}/>
+                <Button className={"btn-outline mt-4 flex items-center justify-center"}
+                        onClick={handleGoogleSignUp}
+                        text=""
+                        disabled={isLoading}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 488 512"
                          className="w-6 h-6 mr-2">
                         <path

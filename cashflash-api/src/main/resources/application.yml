@@ -1,12 +1,12 @@
 spring:
   profiles:
-    active: default
+    active: dev
 
 ---
 spring:
   config:
     activate:
-      on-profile: default
+      on-profile: dev
   datasource:
     url: jdbc:postgresql://localhost:5432/cashflash
     username: ${DB_USERNAME_LOCAL}
@@ -59,3 +59,66 @@ rsa:
 
 frontend:
   url: http://localhost:5173
+
+---
+spring:
+  config:
+    activate:
+      on-profile: qa
+  datasource:
+    url: jdbc:postgresql://qa-db:5432/cashflash-db
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  threads:
+    virtual:
+      enabled: true
+
+logging:
+  file:
+    name: cashflash-logs/cashflash-logs.txt
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 7
+      total-size-cap: 100MB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+
+rsa:
+  public-key: classpath:certs/public.pem
+  private-key: classpath:certs/private.pem
+
+frontend:
+  url: https://cashflash.app

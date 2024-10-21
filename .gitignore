@@ -24,3 +24,5 @@ build/
 !**/src/test/**/build/
 .vscode/
 /cashflash-api/src/main/resources/certs/
+/cashflash-api/cashflash-logs/cashflash-logs.txt
+/cashflash-logs/cashflash-logs.txt

@@ -29,15 +29,15 @@ const Settings = () => {
     }
 
     const handleDeleteAccount = () => {
-        navigate('/delete-account')
+        navigate('/delete-account');
     }
 
     const handleGrafana = () => {
-        window.open('http://localhost:3000');
+        window.open('http://195.201.248.96:3001');
     }
 
     const handlePgadmin = () => {
-        window.open('http://localhost:9100')
+        window.open('http://195.201.248.96:9100');
     }
 
     return (

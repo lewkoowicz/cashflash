@@ -44,7 +44,7 @@ const DefaultLanguage = () => {
                             <input type="radio" name="radio-10" onChange={toggleLanguage}
                                    className="radio checked:bg-blue-900"
                                    checked={language === 'pl'}/>
-                            <span className="ml-2">{t.defaultLanguage.polish}</span>
+                            <span className="text-sm sm:text-base ml-2">{t.defaultLanguage.polish}</span>
                             <div className="absolute right-40">
                                 <img src={polishFlag} alt="Polish flag" className="w-6 h-4"/>
                             </div>
@@ -55,7 +55,7 @@ const DefaultLanguage = () => {
                             <input type="radio" name="radio-10" onChange={toggleLanguage}
                                    className="radio checked:bg-blue-500"
                                    checked={language === 'en'}/>
-                            <span className="ml-2">{t.defaultLanguage.english}</span>
+                            <span className="text-sm sm:text-base ml-2">{t.defaultLanguage.english}</span>
                             <div className="absolute right-40">
                                 <img src={ukFlag} alt="UK flag" className="w-6 h-4"/>
                             </div>

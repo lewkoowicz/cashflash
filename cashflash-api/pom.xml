@@ -113,6 +113,13 @@
             <plugin>
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
+                <configuration>
+                    <buildArgs>
+                        <buildArg>-H:IncludeResources=.*\.properties</buildArg>
+                        <buildArg>-H:IncludeResources=messages/.*</buildArg>
+                        <buildArg>-H:IncludeResources=certs/.*</buildArg>
+                    </buildArgs>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

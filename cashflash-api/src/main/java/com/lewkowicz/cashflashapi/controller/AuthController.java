@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,8 @@ import java.util.Locale;
 @Validated
 @AllArgsConstructor
 public class AuthController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     private final AuthServiceImpl authService;
     private final MessageSource messageSource;
@@ -58,11 +62,15 @@ public class AuthController {
 
     @PostMapping("/sign-out")
     public ResponseEntity<ResponseDto> signout(HttpServletRequest request) {
+        logger.info("Attempting to sign out user.");
         SecurityContextHolder.clearContext();
+        logger.info("Security context cleared.");
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
+            logger.info("User session invalidated.");
         }
+        logger.info("User signed out successfully.");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseDto(HttpStatus.OK.toString(), getMessage(AuthConstants.LOGOUT_SUCCESS)));

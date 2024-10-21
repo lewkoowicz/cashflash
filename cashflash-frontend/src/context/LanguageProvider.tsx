@@ -14,7 +14,10 @@ interface LanguageProviderProps {
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({children}) => {
     const [language, setLanguage] = useState<'pl' | 'en'>(() => {
         const savedLanguage = localStorage.getItem('language');
-        return (savedLanguage === 'pl' || savedLanguage === 'en') ? savedLanguage : 'pl';
+        if (savedLanguage === 'pl' || savedLanguage === 'en') {
+            return savedLanguage;
+        }
+        return navigator.language.startsWith('pl') ? 'pl' : 'en';
     });
 
     useEffect(() => {

@@ -366,7 +366,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "system_cpu_usage{instance=\"host.docker.internal:8080\", application=\"Cashflash\"}",
+          "expr": "system_cpu_usage{instance=\"cashflash-api:8080\", application=\"Cashflash\"}",
           "instant": false,
           "legendFormat": "System CPU Usage",
           "range": true,
@@ -378,7 +378,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "process_cpu_usage{instance=\"host.docker.internal:8080\", application=\"Cashflash\"}",
+          "expr": "process_cpu_usage{instance=\"cashflash-api:8080\", application=\"Cashflash\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "Process CPU Usage",
@@ -577,7 +577,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "jvm_memory_used_bytes{area=\"heap\", instance=\"host.docker.internal:8080\", application=\"Cashflash\"}",
+          "expr": "jvm_memory_used_bytes{area=\"heap\", instance=\"cashflash-api:8080\", application=\"Cashflash\"}",
           "legendFormat": "JVM Heap Memory Used",
           "range": true,
           "refId": "A"
@@ -588,7 +588,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "jvm_memory_committed_bytes{area=\"heap\", instance=\"host.docker.internal:8080\", application=\"Cashflash\"}",
+          "expr": "jvm_memory_committed_bytes{area=\"heap\", instance=\"cashflash-api:8080\", application=\"Cashflash\"}",
           "hide": false,
           "legendFormat": "JVM Heap Memory Committed",
           "range": true,
@@ -862,49 +862,6 @@
       ],
       "title": "RAM Usage (DB)",
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 17,
-        "w": 24,
-        "x": 0,
-        "y": 24
-      },
-      "id": 2,
-      "options": {
-        "dedupStrategy": "none",
-        "enableLogDetails": true,
-        "prettifyLogMessage": false,
-        "showCommonLabels": false,
-        "showLabels": false,
-        "showTime": false,
-        "sortOrder": "Descending",
-        "wrapLogMessage": true
-      },
-      "pluginVersion": "11.4.0-201739",
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
-          },
-          "editorMode": "code",
-          "expr": "{compose_service=\"cashflash\"}",
-          "hide": false,
-          "queryType": "range",
-          "refId": "A"
-        }
-      ],
-      "title": "Logs",
-      "type": "logs"
     }
   ],
   "preload": false,

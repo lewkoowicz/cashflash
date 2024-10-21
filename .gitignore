@@ -26,3 +26,4 @@ build/
 /cashflash-api/src/main/resources/certs/
 /cashflash-api/cashflash-logs/cashflash-logs.txt
 /cashflash-logs/cashflash-logs.txt
+/cashflash-api/monitoring/docker-compose.yml

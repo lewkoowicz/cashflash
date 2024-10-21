@@ -6,6 +6,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +23,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(OAuth2LoginSuccessHandler.class);
 
     @Value("${frontend.url}")
     private String frontendUrl;
@@ -43,10 +47,18 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         DefaultOAuth2User principal = (DefaultOAuth2User) authentication.getPrincipal();
         String email = principal.getAttribute("email");
 
+        logger.info("Attemting to sign in with OAuth2 for email: {}", email);
+
         userRepository.findByEmail(email)
                 .ifPresentOrElse(
-                        user -> handleExistingUser(response, oAuth2AuthenticationToken, principal, user),
-                        () -> handleNewUser(response, email)
+                        user -> {
+                            logger.info("User exists in the database. Handling existing user login for email: {}", email);
+                            handleExistingUser(response, oAuth2AuthenticationToken, principal, user);
+                        },
+                        () -> {
+                            logger.info("User does not exist. Handling new user creation for email: {}", email);
+                            handleNewUser(response, email);
+                        }
                 );
 
         this.setAlwaysUseDefaultTargetUrl(true);
@@ -60,6 +72,7 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 
         String jwt = tokenService.generateToken(newAuth);
         redirectToFrontend(response, "?token=" + jwt);
+        logger.info("Login success for email: {}", user.getEmail());
     }
 
     private Authentication createNewAuthentication(OAuth2AuthenticationToken oAuth2AuthenticationToken, DefaultOAuth2User principal, User user) {
@@ -84,12 +97,14 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         userRepository.save(newUser);
 
         redirectToFrontend(response, "?token=oauth");
+        logger.info("User signed up: {}", email);
     }
 
     private void redirectToFrontend(HttpServletResponse response, String queryParams) {
         try {
             response.sendRedirect(frontendUrl + queryParams);
         } catch (IOException e) {
+            logger.info("Failed to redirect to frontend with error: {}", e.getMessage());
             throw new RuntimeException("Failed to redirect to frontend", e);
         }
     }

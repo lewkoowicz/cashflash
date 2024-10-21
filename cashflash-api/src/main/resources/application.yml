@@ -43,10 +43,6 @@ spring:
     virtual:
       enabled: true
 
-logging:
-  file:
-    name: C:\java-projects\cashflash-logs\logs.txt
-
 management:
   endpoints:
     web:

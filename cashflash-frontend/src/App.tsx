@@ -23,7 +23,7 @@ function App() {
                 <ThemeProvider>
                     <AuthProvider>
                         <CsrfProvider>
-                            <div className="flex flex-col min-h-screen">
+                            <div className="flex flex-col min-h-dvh">
                                 <Navbar/>
                                 <Routes>
                                     <Route path="/" element={
